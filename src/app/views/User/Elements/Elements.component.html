@@ -1,0 +1,2408 @@
+
+
+<div class="pl-lg-4 backgroundForm">
+
+  <ng-container *ngIf="path!==''">
+
+    <div class="col-lg-12 ">
+      <div class="form-group ">
+
+        <input type="text"   value="{{path}}:" class="form-control form-control-alternative" readonly style="
+    margin-top: 15px;">
+
+      </div>
+</div>
+  </ng-container>
+
+  <ng-container *ngIf="showfile">
+  <div class="displayMargin">
+
+        <mat-card  >
+          <mat-grid-list   cols="1" >
+            <ng-container *ngIf="ElementCol==''">
+              <mat-card   *ngFor="let division of divisions | ElementsFilter: searchElement | paginate: configPagination"  >
+                <ng-container  *ngIf="division.img!=null">
+                <mat-card class="imgDivision" [ngStyle]="{'background-image': 'url(' +division.img  + ')'}">
+                <ng-container  *ngIf="division!=null">
+                  <mat-card-actions class="actionscard">
+                    <div class="row">
+                      <div class="col-lg-11">
+                        <div class="form-group">
+                    <button mat-button (click)="afficher(division.id)">Afficher</button>
+                          <ng-container *ngIf="typeUser=='Creator'">
+                    <button  mat-button [matMenuTriggerFor]="menu">
+                      Options
+                    </button>
+                            </ng-container>
+                    </div>
+                         </div>
+                          </div>
+                    <mat-menu #menu="matMenu">
+
+                        <ng-container *ngIf="division.type=='Dossier'">
+                        <button mat-menu-item (click)="openWriteElement(contentAddElement1 )">
+                          <mat-icon>create</mat-icon>
+                          <span>Ajouter</span>
+                        </button>
+                        </ng-container>
+                        <button mat-menu-item (click)="copier(division.id)">
+                          <mat-icon>file_copy</mat-icon>
+                          <span>Copier</span>
+                        </button>
+                        <button mat-menu-item (click)="couper(division.id)">
+                          <mat-icon>file_copy</mat-icon>
+                          <span>Couper</span>
+                        </button>
+                        <ng-container *ngIf="division.type=='Dossier'">
+                          <button mat-menu-item [disabled]="indexCopierOrCouper==0" (click)="coller(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Coller</span>
+                          </button>
+                        </ng-container>
+                        <button mat-menu-item   (click)="deleteElement(division.id)"  >
+                          <mat-icon>clear</mat-icon>
+                          <span>Supprimer</span>
+                        </button>
+
+                      <ng-template #contentAddElement1 let-modal class="modal-lg" >
+
+
+
+                        <div class="modal-header ">
+                          <h4 class="modal-title" id="modal-basic-title">Element</h4>
+                          <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" (click)="modal.dismiss('Cross click')">x</button>
+                        </div>
+                        <div class="modal-body">
+                          <form  [formGroup]="myElementForm" >
+                            <div class="pl-lg-4">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="form-group">
+                                    <label class="form-control-label">Nom   :</label>
+                                    <input type="text"   formControlName="nom"  class="form-control form-control-alternative" placeholder="">
+                                    <span class="text-danger"
+                                          *ngIf="registerFormControl.nom.untouched || registerFormControl.nom.errors?.required">
+                                    Name is required
+                                </span>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="form-group">
+                                    <label class="form-control-label"> Titre  :</label>
+
+                                    <input type="text"   formControlName="titre"  class="form-control form-control-alternative" placeholder="">
+                                    <span class="text-danger"
+                                          *ngIf="registerFormControl.titre.untouched || registerFormControl.titre.errors?.required">
+                                    Title is required
+                                </span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="form-group">
+                                    <label class="form-control-label">Description</label>
+                                    <input type="text"   formControlName="description"  class="form-control form-control-alternative" placeholder="">
+                                    <span class="text-danger"
+                                          *ngIf="registerFormControl.description.untouched || registerFormControl.description.errors?.required">
+                                    Description is required
+                                </span>
+                                  </div>
+                                </div>
+
+                                <ng-container *ngIf="showFileInput">
+                                  <div class="col-lg-6">
+                                    <div class="form-group">
+                                      <label class="form-control-label">Fichier</label>
+
+                                      <input type="file" formControlName="path" class="form-control form-control-alternative"  (change)="handleFileInput($any($event.target).files)" >
+                                      <span class="text-danger"
+                                            *ngIf="registerFormControl.path.untouched || registerFormControl.path.errors?.required">
+                                   File is required
+                               </span>
+                                    </div>
+                                  </div>
+                                </ng-container>
+                              </div>
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="form-group">
+                                    <label class="form-control-label">Date</label>
+                                    <input type="date"   formControlName="date"  class="form-control form-control-alternative" placeholder="">
+                                    <span class="text-danger"
+                                          *ngIf="registerFormControl.date.untouched || registerFormControl.date.errors?.required">
+                                    Date is required
+                                </span>
+                                  </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                  <div class="form-group">
+                                    <label class="form-control-label">Type</label>
+                                    <select formControlName="type" class="form-control form-control-alternative" (click)="togglefile(myElementForm)">
+
+                                      <option  value=Dossier>Dossier </option>
+                                      <option  value=Fichier>Fichier  </option>
+
+                                    </select>
+                                    <span class="text-danger"
+                                          *ngIf="registerFormControl.type.untouched || registerFormControl.type.errors?.required">
+                                    Type is required
+                                </span>
+                                  </div>
+                                </div>
+
+                              </div>
+
+
+
+
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="form-group">
+
+                                    <button class="button"  class="button" [disabled]="
+    registerFormControl.nom.errors?.required ||
+    registerFormControl.titre.errors?.required ||
+    registerFormControl.description.errors?.required ||
+
+    registerFormControl.date.errors?.required ||
+
+    registerFormControl.type.errors?.required  " (click)="putElement(myElementForm,division.id)" >
+
+                                      Enregistrer
+                                    </button>
+                                    <!--           <button (click)="submitFile()">add</button>-->
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="form-group">
+
+
+                                    <button class="button" (click)="modal.dismiss('Cross click')">
+                                      Annuler
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+
+                      </ng-template>
+                    </mat-menu>
+                  </mat-card-actions>
+                    <mat-card-header class="headercard">
+
+                      <mat-card-title>{{division.nom}}: {{division.date | date:'shortDate'}} </mat-card-title>
+
+
+
+                    </mat-card-header>
+                    <mat-card-content class="contentcard">
+                        <ng-container *ngIf="division.type=='Dossier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                          <img mat-card-image class="imgfile" src="./assets/img/brand/folder.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+                        </ng-container>
+                        <ng-container *ngIf="division.type=='Fichier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <img mat-card-image class="imgfile" src="./assets/img/brand/file.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </ng-container>
+                    </mat-card-content>
+                </ng-container>
+              </mat-card>
+                </ng-container>
+                <ng-container  *ngIf="division.img==null">
+                  <mat-card >
+                    <ng-container  *ngIf="division!=null">
+                      <mat-card-actions class="actionscard">
+                        <div class="row">
+                          <div class="col-lg-11">
+                            <div class="form-group">
+                              <button mat-button (click)="afficher(division.id)">Afficher</button>
+                              <ng-container *ngIf="typeUser=='Creator'">
+                                <button  mat-button [matMenuTriggerFor]="menu">
+                                  Options
+                                </button>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                        <mat-menu #menu="matMenu">
+
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item (click)="openWriteElement(contentAddElement1 )">
+                              <mat-icon>create</mat-icon>
+                              <span>Ajouter</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item (click)="copier(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Copier</span>
+                          </button>
+                          <button mat-menu-item (click)="couper(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Couper</span>
+                          </button>
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item [disabled]="indexCopierOrCouper==0" (click)="coller(division.id)">
+                              <mat-icon>file_copy</mat-icon>
+                              <span>Coller</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item   (click)="deleteElement(division.id)"  >
+                            <mat-icon>clear</mat-icon>
+                            <span>Supprimer</span>
+                          </button>
+
+                          <ng-template #contentAddElement1 let-modal class="modal-lg" >
+
+
+
+                            <div class="modal-header ">
+                              <h4 class="modal-title" id="modal-basic-title">Element</h4>
+                              <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" (click)="modal.dismiss('Cross click')">x</button>
+                            </div>
+                            <div class="modal-body">
+                              <form  [formGroup]="myElementForm" >
+                                <div class="pl-lg-4">
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Nom   :</label>
+                                        <input type="text"   formControlName="nom"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.nom.untouched || registerFormControl.nom.errors?.required">
+                                    Name is required
+                                </span>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label"> Titre  :</label>
+
+                                        <input type="text"   formControlName="titre"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.titre.untouched || registerFormControl.titre.errors?.required">
+                                    Title is required
+                                </span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Description</label>
+                                        <input type="text"   formControlName="description"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.description.untouched || registerFormControl.description.errors?.required">
+                                    Description is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <ng-container *ngIf="showFileInput">
+                                      <div class="col-lg-6">
+                                        <div class="form-group">
+                                          <label class="form-control-label">Fichier</label>
+
+                                          <input type="file" formControlName="path" class="form-control form-control-alternative"  (change)="handleFileInput($any($event.target).files)" >
+                                          <span class="text-danger"
+                                                *ngIf="registerFormControl.path.untouched || registerFormControl.path.errors?.required">
+                                   File is required
+                               </span>
+                                        </div>
+                                      </div>
+                                    </ng-container>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Date</label>
+                                        <input type="date"   formControlName="date"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.date.untouched || registerFormControl.date.errors?.required">
+                                    Date is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Type</label>
+                                        <select formControlName="type" class="form-control form-control-alternative" (click)="togglefile(myElementForm)">
+
+                                          <option  value=Dossier>Dossier </option>
+                                          <option  value=Fichier>Fichier  </option>
+
+                                        </select>
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.type.untouched || registerFormControl.type.errors?.required">
+                                    Type is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                  </div>
+
+
+
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+                                        <button class="button"  class="button" [disabled]="
+    registerFormControl.nom.errors?.required ||
+    registerFormControl.titre.errors?.required ||
+    registerFormControl.description.errors?.required ||
+
+    registerFormControl.date.errors?.required ||
+
+    registerFormControl.type.errors?.required  " (click)="putElement(myElementForm,division.id)" >
+
+                                          Enregistrer
+                                        </button>
+                                        <!--           <button (click)="submitFile()">add</button>-->
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+
+                                        <button class="button" (click)="modal.dismiss('Cross click')">
+                                          Annuler
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+
+                          </ng-template>
+                        </mat-menu>
+                      </mat-card-actions>
+                      <mat-card-header class="headercard">
+
+                        <mat-card-title>{{division.nom}}: {{division.date | date:'shortDate'}} </mat-card-title>
+
+
+
+                      </mat-card-header>
+                      <mat-card-content class="contentcard">
+
+
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <div class="row">
+                              <div class="col-lg-auto">
+                                <div class="form-group">
+                                  <img mat-card-image class="imgfile" src="./assets/img/brand/folder.png">
+                                </div>
+                              </div>
+                              <div class="col-lg-auto">
+                                <div class="form-group">
+                                  <h4>{{division.titre}}:</h4> {{division.description}}
+
+                                </div>
+                              </div>
+                            </div>
+                          </ng-container>
+                          <ng-container *ngIf="division.type=='Fichier'">
+                            <div class="row">
+                              <div class="col-lg-auto">
+                                <div class="form-group">
+                                  <img mat-card-image class="imgfile" src="./assets/img/brand/file.png">
+                                </div>
+                              </div>
+                              <div class="col-lg-auto">
+                                <div class="form-group">
+                                  <h4>{{division.titre}}:</h4> {{division.description}}
+
+                                </div>
+                              </div>
+                            </div>
+
+                          </ng-container>
+
+
+
+
+                      </mat-card-content>
+
+
+
+
+
+
+
+
+                    </ng-container>
+                  </mat-card>
+                </ng-container>
+              </mat-card>
+
+            </ng-container>
+            <ng-container *ngIf="ElementCol=='nom'">
+              <mat-card   *ngFor="let division of divisions | ElementsFilter: searchElement | paginate: configPagination"  >
+                <ng-container  *ngIf="division.img!=null">
+                  <mat-card class="imgDivision" [ngStyle]="{'background-image': 'url(' +division.img  + ')'}">
+                    <ng-container  *ngIf="division!=null">
+                      <mat-card-actions class="actionscard">
+                        <div class="row">
+                          <div class="col-lg-11">
+                            <div class="form-group">
+                              <button mat-button (click)="afficher(division.id)">Afficher</button>
+                              <ng-container *ngIf="typeUser=='Creator'">
+                                <button  mat-button [matMenuTriggerFor]="menu">
+                                  Options
+                                </button>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                        <mat-menu #menu="matMenu">
+
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item (click)="openWriteElement(contentAddElement1 )">
+                              <mat-icon>create</mat-icon>
+                              <span>Ajouter</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item (click)="copier(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Copier</span>
+                          </button>
+                          <button mat-menu-item (click)="couper(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Couper</span>
+                          </button>
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item [disabled]="indexCopierOrCouper==0" (click)="coller(division.id)">
+                              <mat-icon>file_copy</mat-icon>
+                              <span>Coller</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item   (click)="deleteElement(division.id)"  >
+                            <mat-icon>clear</mat-icon>
+                            <span>Supprimer</span>
+                          </button>
+
+                          <ng-template #contentAddElement1 let-modal class="modal-lg" >
+
+
+
+                            <div class="modal-header ">
+                              <h4 class="modal-title" id="modal-basic-title">Element</h4>
+                              <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" (click)="modal.dismiss('Cross click')">x</button>
+                            </div>
+                            <div class="modal-body">
+                              <form  [formGroup]="myElementForm" >
+                                <div class="pl-lg-4">
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Nom   :</label>
+                                        <input type="text"   formControlName="nom"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.nom.untouched || registerFormControl.nom.errors?.required">
+                                    Name is required
+                                </span>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label"> Titre  :</label>
+
+                                        <input type="text"   formControlName="titre"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.titre.untouched || registerFormControl.titre.errors?.required">
+                                    Title is required
+                                </span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Description</label>
+                                        <input type="text"   formControlName="description"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.description.untouched || registerFormControl.description.errors?.required">
+                                    Description is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <ng-container *ngIf="showFileInput">
+                                      <div class="col-lg-6">
+                                        <div class="form-group">
+                                          <label class="form-control-label">Fichier</label>
+
+                                          <input type="file" formControlName="path" class="form-control form-control-alternative"  (change)="handleFileInput($any($event.target).files)" >
+                                          <span class="text-danger"
+                                                *ngIf="registerFormControl.path.untouched || registerFormControl.path.errors?.required">
+                                   File is required
+                               </span>
+                                        </div>
+                                      </div>
+                                    </ng-container>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Date</label>
+                                        <input type="date"   formControlName="date"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.date.untouched || registerFormControl.date.errors?.required">
+                                    Date is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Type</label>
+                                        <select formControlName="type" class="form-control form-control-alternative" (click)="togglefile(myElementForm)">
+
+                                          <option  value=Dossier>Dossier </option>
+                                          <option  value=Fichier>Fichier  </option>
+
+                                        </select>
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.type.untouched || registerFormControl.type.errors?.required">
+                                    Type is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                  </div>
+
+
+
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+                                        <button class="button"  class="button" [disabled]="
+    registerFormControl.nom.errors?.required ||
+    registerFormControl.titre.errors?.required ||
+    registerFormControl.description.errors?.required ||
+
+    registerFormControl.date.errors?.required ||
+
+    registerFormControl.type.errors?.required  " (click)="putElement(myElementForm,division.id)" >
+
+                                          Enregistrer
+                                        </button>
+                                        <!--           <button (click)="submitFile()">add</button>-->
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+
+                                        <button class="button" (click)="modal.dismiss('Cross click')">
+                                          Annuler
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+
+                          </ng-template>
+                        </mat-menu>
+                      </mat-card-actions>
+                      <mat-card-header class="headercard">
+
+                        <mat-card-title>{{division.nom}}: {{division.date | date:'shortDate'}} </mat-card-title>
+
+
+
+                      </mat-card-header>
+                      <mat-card-content class="contentcard">
+                        <ng-container *ngIf="division.type=='Dossier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <img mat-card-image class="imgfile" src="./assets/img/brand/folder.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+                        </ng-container>
+                        <ng-container *ngIf="division.type=='Fichier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <img mat-card-image class="imgfile" src="./assets/img/brand/file.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </ng-container>
+                      </mat-card-content>
+                    </ng-container>
+                  </mat-card>
+                </ng-container>
+                <ng-container  *ngIf="division.img==null">
+                  <mat-card >
+                    <ng-container  *ngIf="division!=null">
+                      <mat-card-actions class="actionscard">
+                        <div class="row">
+                          <div class="col-lg-11">
+                            <div class="form-group">
+                              <button mat-button (click)="afficher(division.id)">Afficher</button>
+                              <ng-container *ngIf="typeUser=='Creator'">
+                                <button  mat-button [matMenuTriggerFor]="menu">
+                                  Options
+                                </button>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                        <mat-menu #menu="matMenu">
+
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item (click)="openWriteElement(contentAddElement1 )">
+                              <mat-icon>create</mat-icon>
+                              <span>Ajouter</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item (click)="copier(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Copier</span>
+                          </button>
+                          <button mat-menu-item (click)="couper(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Couper</span>
+                          </button>
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item [disabled]="indexCopierOrCouper==0" (click)="coller(division.id)">
+                              <mat-icon>file_copy</mat-icon>
+                              <span>Coller</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item   (click)="deleteElement(division.id)"  >
+                            <mat-icon>clear</mat-icon>
+                            <span>Supprimer</span>
+                          </button>
+
+                          <ng-template #contentAddElement1 let-modal class="modal-lg" >
+
+
+
+                            <div class="modal-header ">
+                              <h4 class="modal-title" id="modal-basic-title">Element</h4>
+                              <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" (click)="modal.dismiss('Cross click')">x</button>
+                            </div>
+                            <div class="modal-body">
+                              <form  [formGroup]="myElementForm" >
+                                <div class="pl-lg-4">
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Nom   :</label>
+                                        <input type="text"   formControlName="nom"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.nom.untouched || registerFormControl.nom.errors?.required">
+                                    Name is required
+                                </span>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label"> Titre  :</label>
+
+                                        <input type="text"   formControlName="titre"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.titre.untouched || registerFormControl.titre.errors?.required">
+                                    Title is required
+                                </span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Description</label>
+                                        <input type="text"   formControlName="description"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.description.untouched || registerFormControl.description.errors?.required">
+                                    Description is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <ng-container *ngIf="showFileInput">
+                                      <div class="col-lg-6">
+                                        <div class="form-group">
+                                          <label class="form-control-label">Fichier</label>
+
+                                          <input type="file" formControlName="path" class="form-control form-control-alternative"  (change)="handleFileInput($any($event.target).files)" >
+                                          <span class="text-danger"
+                                                *ngIf="registerFormControl.path.untouched || registerFormControl.path.errors?.required">
+                                   File is required
+                               </span>
+                                        </div>
+                                      </div>
+                                    </ng-container>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Date</label>
+                                        <input type="date"   formControlName="date"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.date.untouched || registerFormControl.date.errors?.required">
+                                    Date is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Type</label>
+                                        <select formControlName="type" class="form-control form-control-alternative" (click)="togglefile(myElementForm)">
+
+                                          <option  value=Dossier>Dossier </option>
+                                          <option  value=Fichier>Fichier  </option>
+
+                                        </select>
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.type.untouched || registerFormControl.type.errors?.required">
+                                    Type is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                  </div>
+
+
+
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+                                        <button class="button"  class="button" [disabled]="
+    registerFormControl.nom.errors?.required ||
+    registerFormControl.titre.errors?.required ||
+    registerFormControl.description.errors?.required ||
+
+    registerFormControl.date.errors?.required ||
+
+    registerFormControl.type.errors?.required  " (click)="putElement(myElementForm,division.id)" >
+
+                                          Enregistrer
+                                        </button>
+                                        <!--           <button (click)="submitFile()">add</button>-->
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+
+                                        <button class="button" (click)="modal.dismiss('Cross click')">
+                                          Annuler
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+
+                          </ng-template>
+                        </mat-menu>
+                      </mat-card-actions>
+                      <mat-card-header class="headercard">
+
+                        <mat-card-title>{{division.nom}}: {{division.date | date:'shortDate'}} </mat-card-title>
+
+
+
+                      </mat-card-header>
+                      <mat-card-content class="contentcard">
+
+
+                        <ng-container *ngIf="division.type=='Dossier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <img mat-card-image class="imgfile" src="./assets/img/brand/folder.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+                        </ng-container>
+                        <ng-container *ngIf="division.type=='Fichier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <img mat-card-image class="imgfile" src="./assets/img/brand/file.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </ng-container>
+
+
+
+
+                      </mat-card-content>
+
+
+
+
+
+
+
+
+                    </ng-container>
+                  </mat-card>
+                </ng-container>
+              </mat-card>
+            </ng-container>
+            <ng-container *ngIf="ElementCol=='titre'">
+              <mat-card   *ngFor="let division of divisions | ElementsFilter: searchElement | paginate: configPagination"  >
+                <ng-container  *ngIf="division.img!=null">
+                  <mat-card class="imgDivision" [ngStyle]="{'background-image': 'url(' +division.img  + ')'}">
+                    <ng-container  *ngIf="division!=null">
+                      <mat-card-actions class="actionscard">
+                        <div class="row">
+                          <div class="col-lg-11">
+                            <div class="form-group">
+                              <button mat-button (click)="afficher(division.id)">Afficher</button>
+                              <ng-container *ngIf="typeUser=='Creator'">
+                                <button  mat-button [matMenuTriggerFor]="menu">
+                                  Options
+                                </button>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                        <mat-menu #menu="matMenu">
+
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item (click)="openWriteElement(contentAddElement1 )">
+                              <mat-icon>create</mat-icon>
+                              <span>Ajouter</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item (click)="copier(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Copier</span>
+                          </button>
+                          <button mat-menu-item (click)="couper(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Couper</span>
+                          </button>
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item [disabled]="indexCopierOrCouper==0" (click)="coller(division.id)">
+                              <mat-icon>file_copy</mat-icon>
+                              <span>Coller</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item   (click)="deleteElement(division.id)"  >
+                            <mat-icon>clear</mat-icon>
+                            <span>Supprimer</span>
+                          </button>
+
+                          <ng-template #contentAddElement1 let-modal class="modal-lg" >
+
+
+
+                            <div class="modal-header ">
+                              <h4 class="modal-title" id="modal-basic-title">Element</h4>
+                              <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" (click)="modal.dismiss('Cross click')">x</button>
+                            </div>
+                            <div class="modal-body">
+                              <form  [formGroup]="myElementForm" >
+                                <div class="pl-lg-4">
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Nom   :</label>
+                                        <input type="text"   formControlName="nom"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.nom.untouched || registerFormControl.nom.errors?.required">
+                                    Name is required
+                                </span>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label"> Titre  :</label>
+
+                                        <input type="text"   formControlName="titre"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.titre.untouched || registerFormControl.titre.errors?.required">
+                                    Title is required
+                                </span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Description</label>
+                                        <input type="text"   formControlName="description"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.description.untouched || registerFormControl.description.errors?.required">
+                                    Description is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <ng-container *ngIf="showFileInput">
+                                      <div class="col-lg-6">
+                                        <div class="form-group">
+                                          <label class="form-control-label">Fichier</label>
+
+                                          <input type="file" formControlName="path" class="form-control form-control-alternative"  (change)="handleFileInput($any($event.target).files)" >
+                                          <span class="text-danger"
+                                                *ngIf="registerFormControl.path.untouched || registerFormControl.path.errors?.required">
+                                   File is required
+                               </span>
+                                        </div>
+                                      </div>
+                                    </ng-container>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Date</label>
+                                        <input type="date"   formControlName="date"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.date.untouched || registerFormControl.date.errors?.required">
+                                    Date is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Type</label>
+                                        <select formControlName="type" class="form-control form-control-alternative" (click)="togglefile(myElementForm)">
+
+                                          <option  value=Dossier>Dossier </option>
+                                          <option  value=Fichier>Fichier  </option>
+
+                                        </select>
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.type.untouched || registerFormControl.type.errors?.required">
+                                    Type is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                  </div>
+
+
+
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+                                        <button class="button"  class="button" [disabled]="
+    registerFormControl.nom.errors?.required ||
+    registerFormControl.titre.errors?.required ||
+    registerFormControl.description.errors?.required ||
+
+    registerFormControl.date.errors?.required ||
+
+    registerFormControl.type.errors?.required  " (click)="putElement(myElementForm,division.id)" >
+
+                                          Enregistrer
+                                        </button>
+                                        <!--           <button (click)="submitFile()">add</button>-->
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+
+                                        <button class="button" (click)="modal.dismiss('Cross click')">
+                                          Annuler
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+
+                          </ng-template>
+                        </mat-menu>
+                      </mat-card-actions>
+                      <mat-card-header class="headercard">
+
+                        <mat-card-title>{{division.nom}}: {{division.date | date:'shortDate'}} </mat-card-title>
+
+
+
+                      </mat-card-header>
+                      <mat-card-content class="contentcard">
+                        <ng-container *ngIf="division.type=='Dossier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <img mat-card-image class="imgfile" src="./assets/img/brand/folder.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+                        </ng-container>
+                        <ng-container *ngIf="division.type=='Fichier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <img mat-card-image class="imgfile" src="./assets/img/brand/file.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </ng-container>
+                      </mat-card-content>
+                    </ng-container>
+                  </mat-card>
+                </ng-container>
+                <ng-container  *ngIf="division.img==null">
+                  <mat-card >
+                    <ng-container  *ngIf="division!=null">
+                      <mat-card-actions class="actionscard">
+                        <div class="row">
+                          <div class="col-lg-11">
+                            <div class="form-group">
+                              <button mat-button (click)="afficher(division.id)">Afficher</button>
+                              <ng-container *ngIf="typeUser=='Creator'">
+                                <button  mat-button [matMenuTriggerFor]="menu">
+                                  Options
+                                </button>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                        <mat-menu #menu="matMenu">
+
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item (click)="openWriteElement(contentAddElement1 )">
+                              <mat-icon>create</mat-icon>
+                              <span>Ajouter</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item (click)="copier(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Copier</span>
+                          </button>
+                          <button mat-menu-item (click)="couper(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Couper</span>
+                          </button>
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item [disabled]="indexCopierOrCouper==0" (click)="coller(division.id)">
+                              <mat-icon>file_copy</mat-icon>
+                              <span>Coller</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item   (click)="deleteElement(division.id)"  >
+                            <mat-icon>clear</mat-icon>
+                            <span>Supprimer</span>
+                          </button>
+
+                          <ng-template #contentAddElement1 let-modal class="modal-lg" >
+
+
+
+                            <div class="modal-header ">
+                              <h4 class="modal-title" id="modal-basic-title">Element</h4>
+                              <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" (click)="modal.dismiss('Cross click')">x</button>
+                            </div>
+                            <div class="modal-body">
+                              <form  [formGroup]="myElementForm" >
+                                <div class="pl-lg-4">
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Nom   :</label>
+                                        <input type="text"   formControlName="nom"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.nom.untouched || registerFormControl.nom.errors?.required">
+                                    Name is required
+                                </span>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label"> Titre  :</label>
+
+                                        <input type="text"   formControlName="titre"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.titre.untouched || registerFormControl.titre.errors?.required">
+                                    Title is required
+                                </span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Description</label>
+                                        <input type="text"   formControlName="description"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.description.untouched || registerFormControl.description.errors?.required">
+                                    Description is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <ng-container *ngIf="showFileInput">
+                                      <div class="col-lg-6">
+                                        <div class="form-group">
+                                          <label class="form-control-label">Fichier</label>
+
+                                          <input type="file" formControlName="path" class="form-control form-control-alternative"  (change)="handleFileInput($any($event.target).files)" >
+                                          <span class="text-danger"
+                                                *ngIf="registerFormControl.path.untouched || registerFormControl.path.errors?.required">
+                                   File is required
+                               </span>
+                                        </div>
+                                      </div>
+                                    </ng-container>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Date</label>
+                                        <input type="date"   formControlName="date"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.date.untouched || registerFormControl.date.errors?.required">
+                                    Date is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Type</label>
+                                        <select formControlName="type" class="form-control form-control-alternative" (click)="togglefile(myElementForm)">
+
+                                          <option  value=Dossier>Dossier </option>
+                                          <option  value=Fichier>Fichier  </option>
+
+                                        </select>
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.type.untouched || registerFormControl.type.errors?.required">
+                                    Type is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                  </div>
+
+
+
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+                                        <button class="button"  class="button" [disabled]="
+    registerFormControl.nom.errors?.required ||
+    registerFormControl.titre.errors?.required ||
+    registerFormControl.description.errors?.required ||
+
+    registerFormControl.date.errors?.required ||
+
+    registerFormControl.type.errors?.required  " (click)="putElement(myElementForm,division.id)" >
+
+                                          Enregistrer
+                                        </button>
+                                        <!--           <button (click)="submitFile()">add</button>-->
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+
+                                        <button class="button" (click)="modal.dismiss('Cross click')">
+                                          Annuler
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+
+                          </ng-template>
+                        </mat-menu>
+                      </mat-card-actions>
+                      <mat-card-header class="headercard">
+
+                        <mat-card-title>{{division.nom}}: {{division.date | date:'shortDate'}} </mat-card-title>
+
+
+
+                      </mat-card-header>
+                      <mat-card-content class="contentcard">
+
+
+                        <ng-container *ngIf="division.type=='Dossier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <img mat-card-image class="imgfile" src="./assets/img/brand/folder.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+                        </ng-container>
+                        <ng-container *ngIf="division.type=='Fichier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <img mat-card-image class="imgfile" src="./assets/img/brand/file.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </ng-container>
+
+
+
+
+                      </mat-card-content>
+
+
+
+
+
+
+
+
+                    </ng-container>
+                  </mat-card>
+                </ng-container>
+              </mat-card>
+            </ng-container>
+            <ng-container *ngIf="ElementCol=='description'">
+              <mat-card   *ngFor="let division of divisions | ElementsFilter: searchElement | paginate: configPagination"  >
+                <ng-container  *ngIf="division.img!=null">
+                  <mat-card class="imgDivision" [ngStyle]="{'background-image': 'url(' +division.img  + ')'}">
+                    <ng-container  *ngIf="division!=null">
+                      <mat-card-actions class="actionscard">
+                        <div class="row">
+                          <div class="col-lg-11">
+                            <div class="form-group">
+                              <button mat-button (click)="afficher(division.id)">Afficher</button>
+                              <ng-container *ngIf="typeUser=='Creator'">
+                                <button  mat-button [matMenuTriggerFor]="menu">
+                                  Options
+                                </button>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                        <mat-menu #menu="matMenu">
+
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item (click)="openWriteElement(contentAddElement1 )">
+                              <mat-icon>create</mat-icon>
+                              <span>Ajouter</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item (click)="copier(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Copier</span>
+                          </button>
+                          <button mat-menu-item (click)="couper(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Couper</span>
+                          </button>
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item [disabled]="indexCopierOrCouper==0" (click)="coller(division.id)">
+                              <mat-icon>file_copy</mat-icon>
+                              <span>Coller</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item   (click)="deleteElement(division.id)"  >
+                            <mat-icon>clear</mat-icon>
+                            <span>Supprimer</span>
+                          </button>
+
+                          <ng-template #contentAddElement1 let-modal class="modal-lg" >
+
+
+
+                            <div class="modal-header ">
+                              <h4 class="modal-title" id="modal-basic-title">Element</h4>
+                              <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" (click)="modal.dismiss('Cross click')">x</button>
+                            </div>
+                            <div class="modal-body">
+                              <form  [formGroup]="myElementForm" >
+                                <div class="pl-lg-4">
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Nom   :</label>
+                                        <input type="text"   formControlName="nom"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.nom.untouched || registerFormControl.nom.errors?.required">
+                                    Name is required
+                                </span>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label"> Titre  :</label>
+
+                                        <input type="text"   formControlName="titre"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.titre.untouched || registerFormControl.titre.errors?.required">
+                                    Title is required
+                                </span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Description</label>
+                                        <input type="text"   formControlName="description"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.description.untouched || registerFormControl.description.errors?.required">
+                                    Description is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <ng-container *ngIf="showFileInput">
+                                      <div class="col-lg-6">
+                                        <div class="form-group">
+                                          <label class="form-control-label">Fichier</label>
+
+                                          <input type="file" formControlName="path" class="form-control form-control-alternative"  (change)="handleFileInput($any($event.target).files)" >
+                                          <span class="text-danger"
+                                                *ngIf="registerFormControl.path.untouched || registerFormControl.path.errors?.required">
+                                   File is required
+                               </span>
+                                        </div>
+                                      </div>
+                                    </ng-container>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Date</label>
+                                        <input type="date"   formControlName="date"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.date.untouched || registerFormControl.date.errors?.required">
+                                    Date is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Type</label>
+                                        <select formControlName="type" class="form-control form-control-alternative" (click)="togglefile(myElementForm)">
+
+                                          <option  value=Dossier>Dossier </option>
+                                          <option  value=Fichier>Fichier  </option>
+
+                                        </select>
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.type.untouched || registerFormControl.type.errors?.required">
+                                    Type is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                  </div>
+
+
+
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+                                        <button class="button"  class="button" [disabled]="
+    registerFormControl.nom.errors?.required ||
+    registerFormControl.titre.errors?.required ||
+    registerFormControl.description.errors?.required ||
+
+    registerFormControl.date.errors?.required ||
+
+    registerFormControl.type.errors?.required  " (click)="putElement(myElementForm,division.id)" >
+
+                                          Enregistrer
+                                        </button>
+                                        <!--           <button (click)="submitFile()">add</button>-->
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+
+                                        <button class="button" (click)="modal.dismiss('Cross click')">
+                                          Annuler
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+
+                          </ng-template>
+                        </mat-menu>
+                      </mat-card-actions>
+                      <mat-card-header class="headercard">
+
+                        <mat-card-title>{{division.nom}}: {{division.date | date:'shortDate'}} </mat-card-title>
+
+
+
+                      </mat-card-header>
+                      <mat-card-content class="contentcard">
+                        <ng-container *ngIf="division.type=='Dossier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <img mat-card-image class="imgfile" src="./assets/img/brand/folder.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+                        </ng-container>
+                        <ng-container *ngIf="division.type=='Fichier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <img mat-card-image class="imgfile" src="./assets/img/brand/file.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </ng-container>
+                      </mat-card-content>
+                    </ng-container>
+                  </mat-card>
+                </ng-container>
+                <ng-container  *ngIf="division.img==null">
+                  <mat-card >
+                    <ng-container  *ngIf="division!=null">
+                      <mat-card-actions class="actionscard">
+                        <div class="row">
+                          <div class="col-lg-11">
+                            <div class="form-group">
+                              <button mat-button (click)="afficher(division.id)">Afficher</button>
+                              <ng-container *ngIf="typeUser=='Creator'">
+                                <button  mat-button [matMenuTriggerFor]="menu">
+                                  Options
+                                </button>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                        <mat-menu #menu="matMenu">
+
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item (click)="openWriteElement(contentAddElement1 )">
+                              <mat-icon>create</mat-icon>
+                              <span>Ajouter</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item (click)="copier(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Copier</span>
+                          </button>
+                          <button mat-menu-item (click)="couper(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Couper</span>
+                          </button>
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item [disabled]="indexCopierOrCouper==0" (click)="coller(division.id)">
+                              <mat-icon>file_copy</mat-icon>
+                              <span>Coller</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item   (click)="deleteElement(division.id)"  >
+                            <mat-icon>clear</mat-icon>
+                            <span>Supprimer</span>
+                          </button>
+
+                          <ng-template #contentAddElement1 let-modal class="modal-lg" >
+
+
+
+                            <div class="modal-header ">
+                              <h4 class="modal-title" id="modal-basic-title">Element</h4>
+                              <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" (click)="modal.dismiss('Cross click')">x</button>
+                            </div>
+                            <div class="modal-body">
+                              <form  [formGroup]="myElementForm" >
+                                <div class="pl-lg-4">
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Nom   :</label>
+                                        <input type="text"   formControlName="nom"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.nom.untouched || registerFormControl.nom.errors?.required">
+                                    Name is required
+                                </span>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label"> Titre  :</label>
+
+                                        <input type="text"   formControlName="titre"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.titre.untouched || registerFormControl.titre.errors?.required">
+                                    Title is required
+                                </span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Description</label>
+                                        <input type="text"   formControlName="description"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.description.untouched || registerFormControl.description.errors?.required">
+                                    Description is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <ng-container *ngIf="showFileInput">
+                                      <div class="col-lg-6">
+                                        <div class="form-group">
+                                          <label class="form-control-label">Fichier</label>
+
+                                          <input type="file" formControlName="path" class="form-control form-control-alternative"  (change)="handleFileInput($any($event.target).files)" >
+                                          <span class="text-danger"
+                                                *ngIf="registerFormControl.path.untouched || registerFormControl.path.errors?.required">
+                                   File is required
+                               </span>
+                                        </div>
+                                      </div>
+                                    </ng-container>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Date</label>
+                                        <input type="date"   formControlName="date"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.date.untouched || registerFormControl.date.errors?.required">
+                                    Date is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Type</label>
+                                        <select formControlName="type" class="form-control form-control-alternative" (click)="togglefile(myElementForm)">
+
+                                          <option  value=Dossier>Dossier </option>
+                                          <option  value=Fichier>Fichier  </option>
+
+                                        </select>
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.type.untouched || registerFormControl.type.errors?.required">
+                                    Type is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                  </div>
+
+
+
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+                                        <button class="button"  class="button" [disabled]="
+    registerFormControl.nom.errors?.required ||
+    registerFormControl.titre.errors?.required ||
+    registerFormControl.description.errors?.required ||
+
+    registerFormControl.date.errors?.required ||
+
+    registerFormControl.type.errors?.required  " (click)="putElement(myElementForm,division.id)" >
+
+                                          Enregistrer
+                                        </button>
+                                        <!--           <button (click)="submitFile()">add</button>-->
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+
+                                        <button class="button" (click)="modal.dismiss('Cross click')">
+                                          Annuler
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+
+                          </ng-template>
+                        </mat-menu>
+                      </mat-card-actions>
+                      <mat-card-header class="headercard">
+
+                        <mat-card-title>{{division.nom}}: {{division.date | date:'shortDate'}} </mat-card-title>
+
+
+
+                      </mat-card-header>
+                      <mat-card-content class="contentcard">
+
+
+                        <ng-container *ngIf="division.type=='Dossier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <img mat-card-image class="imgfile" src="./assets/img/brand/folder.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+                        </ng-container>
+                        <ng-container *ngIf="division.type=='Fichier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <img mat-card-image class="imgfile" src="./assets/img/brand/file.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </ng-container>
+
+
+
+
+                      </mat-card-content>
+
+
+
+
+
+
+
+
+                    </ng-container>
+                  </mat-card>
+                </ng-container>
+              </mat-card>
+            </ng-container>
+            <ng-container *ngIf="ElementCol=='date'">
+              <mat-card   *ngFor="let division of divisions | ElementsFilter: searchElement | paginate: configPagination"  >
+                <ng-container  *ngIf="division.img!=null">
+                  <mat-card class="imgDivision" [ngStyle]="{'background-image': 'url(' +division.img  + ')'}">
+                    <ng-container  *ngIf="division!=null">
+                      <mat-card-actions class="actionscard">
+                        <div class="row">
+                          <div class="col-lg-11">
+                            <div class="form-group">
+                              <button mat-button (click)="afficher(division.id)">Afficher</button>
+                              <ng-container *ngIf="typeUser=='Creator'">
+                                <button  mat-button [matMenuTriggerFor]="menu">
+                                  Options
+                                </button>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                        <mat-menu #menu="matMenu">
+
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item (click)="openWriteElement(contentAddElement1 )">
+                              <mat-icon>create</mat-icon>
+                              <span>Ajouter</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item (click)="copier(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Copier</span>
+                          </button>
+                          <button mat-menu-item (click)="couper(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Couper</span>
+                          </button>
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item [disabled]="indexCopierOrCouper==0" (click)="coller(division.id)">
+                              <mat-icon>file_copy</mat-icon>
+                              <span>Coller</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item   (click)="deleteElement(division.id)"  >
+                            <mat-icon>clear</mat-icon>
+                            <span>Supprimer</span>
+                          </button>
+
+                          <ng-template #contentAddElement1 let-modal class="modal-lg" >
+
+
+
+                            <div class="modal-header ">
+                              <h4 class="modal-title" id="modal-basic-title">Element</h4>
+                              <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" (click)="modal.dismiss('Cross click')">x</button>
+                            </div>
+                            <div class="modal-body">
+                              <form  [formGroup]="myElementForm" >
+                                <div class="pl-lg-4">
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Nom   :</label>
+                                        <input type="text"   formControlName="nom"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.nom.untouched || registerFormControl.nom.errors?.required">
+                                    Name is required
+                                </span>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label"> Titre  :</label>
+
+                                        <input type="text"   formControlName="titre"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.titre.untouched || registerFormControl.titre.errors?.required">
+                                    Title is required
+                                </span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Description</label>
+                                        <input type="text"   formControlName="description"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.description.untouched || registerFormControl.description.errors?.required">
+                                    Description is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <ng-container *ngIf="showFileInput">
+                                      <div class="col-lg-6">
+                                        <div class="form-group">
+                                          <label class="form-control-label">Fichier</label>
+
+                                          <input type="file" formControlName="path" class="form-control form-control-alternative"  (change)="handleFileInput($any($event.target).files)" >
+                                          <span class="text-danger"
+                                                *ngIf="registerFormControl.path.untouched || registerFormControl.path.errors?.required">
+                                   File is required
+                               </span>
+                                        </div>
+                                      </div>
+                                    </ng-container>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Date</label>
+                                        <input type="date"   formControlName="date"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.date.untouched || registerFormControl.date.errors?.required">
+                                    Date is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Type</label>
+                                        <select formControlName="type" class="form-control form-control-alternative" (click)="togglefile(myElementForm)">
+
+                                          <option  value=Dossier>Dossier </option>
+                                          <option  value=Fichier>Fichier  </option>
+
+                                        </select>
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.type.untouched || registerFormControl.type.errors?.required">
+                                    Type is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                  </div>
+
+
+
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+                                        <button class="button"  class="button" [disabled]="
+    registerFormControl.nom.errors?.required ||
+    registerFormControl.titre.errors?.required ||
+    registerFormControl.description.errors?.required ||
+
+    registerFormControl.date.errors?.required ||
+
+    registerFormControl.type.errors?.required  " (click)="putElement(myElementForm,division.id)" >
+
+                                          Enregistrer
+                                        </button>
+                                        <!--           <button (click)="submitFile()">add</button>-->
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+
+                                        <button class="button" (click)="modal.dismiss('Cross click')">
+                                          Annuler
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+
+                          </ng-template>
+                        </mat-menu>
+                      </mat-card-actions>
+                      <mat-card-header class="headercard">
+
+                        <mat-card-title>{{division.nom}}: {{division.date | date:'shortDate'}} </mat-card-title>
+
+
+
+                      </mat-card-header>
+                      <mat-card-content class="contentcard">
+                        <ng-container *ngIf="division.type=='Dossier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <img mat-card-image class="imgfile" src="./assets/img/brand/folder.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+                        </ng-container>
+                        <ng-container *ngIf="division.type=='Fichier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <img mat-card-image class="imgfile" src="./assets/img/brand/file.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </ng-container>
+                      </mat-card-content>
+                    </ng-container>
+                  </mat-card>
+                </ng-container>
+                <ng-container  *ngIf="division.img==null">
+                  <mat-card >
+                    <ng-container  *ngIf="division!=null">
+                      <mat-card-actions class="actionscard">
+                        <div class="row">
+                          <div class="col-lg-11">
+                            <div class="form-group">
+                              <button mat-button (click)="afficher(division.id)">Afficher</button>
+                              <ng-container *ngIf="typeUser=='Creator'">
+                                <button  mat-button [matMenuTriggerFor]="menu">
+                                  Options
+                                </button>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                        <mat-menu #menu="matMenu">
+
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item (click)="openWriteElement(contentAddElement1 )">
+                              <mat-icon>create</mat-icon>
+                              <span>Ajouter</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item (click)="copier(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Copier</span>
+                          </button>
+                          <button mat-menu-item (click)="couper(division.id)">
+                            <mat-icon>file_copy</mat-icon>
+                            <span>Couper</span>
+                          </button>
+                          <ng-container *ngIf="division.type=='Dossier'">
+                            <button mat-menu-item [disabled]="indexCopierOrCouper==0" (click)="coller(division.id)">
+                              <mat-icon>file_copy</mat-icon>
+                              <span>Coller</span>
+                            </button>
+                          </ng-container>
+                          <button mat-menu-item   (click)="deleteElement(division.id)"  >
+                            <mat-icon>clear</mat-icon>
+                            <span>Supprimer</span>
+                          </button>
+
+                          <ng-template #contentAddElement1 let-modal class="modal-lg" >
+
+
+
+                            <div class="modal-header ">
+                              <h4 class="modal-title" id="modal-basic-title">Element</h4>
+                              <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" (click)="modal.dismiss('Cross click')">x</button>
+                            </div>
+                            <div class="modal-body">
+                              <form  [formGroup]="myElementForm" >
+                                <div class="pl-lg-4">
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Nom   :</label>
+                                        <input type="text"   formControlName="nom"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.nom.untouched || registerFormControl.nom.errors?.required">
+                                    Name is required
+                                </span>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label"> Titre  :</label>
+
+                                        <input type="text"   formControlName="titre"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.titre.untouched || registerFormControl.titre.errors?.required">
+                                    Title is required
+                                </span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Description</label>
+                                        <input type="text"   formControlName="description"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.description.untouched || registerFormControl.description.errors?.required">
+                                    Description is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <ng-container *ngIf="showFileInput">
+                                      <div class="col-lg-6">
+                                        <div class="form-group">
+                                          <label class="form-control-label">Fichier</label>
+
+                                          <input type="file" formControlName="path" class="form-control form-control-alternative"  (change)="handleFileInput($any($event.target).files)" >
+                                          <span class="text-danger"
+                                                *ngIf="registerFormControl.path.untouched || registerFormControl.path.errors?.required">
+                                   File is required
+                               </span>
+                                        </div>
+                                      </div>
+                                    </ng-container>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Date</label>
+                                        <input type="date"   formControlName="date"  class="form-control form-control-alternative" placeholder="">
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.date.untouched || registerFormControl.date.errors?.required">
+                                    Date is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-control-label">Type</label>
+                                        <select formControlName="type" class="form-control form-control-alternative" (click)="togglefile(myElementForm)">
+
+                                          <option  value=Dossier>Dossier </option>
+                                          <option  value=Fichier>Fichier  </option>
+
+                                        </select>
+                                        <span class="text-danger"
+                                              *ngIf="registerFormControl.type.untouched || registerFormControl.type.errors?.required">
+                                    Type is required
+                                </span>
+                                      </div>
+                                    </div>
+
+                                  </div>
+
+
+
+
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+                                        <button class="button"  class="button" [disabled]="
+    registerFormControl.nom.errors?.required ||
+    registerFormControl.titre.errors?.required ||
+    registerFormControl.description.errors?.required ||
+
+    registerFormControl.date.errors?.required ||
+
+    registerFormControl.type.errors?.required  " (click)="putElement(myElementForm,division.id)" >
+
+                                          Enregistrer
+                                        </button>
+                                        <!--           <button (click)="submitFile()">add</button>-->
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+
+                                        <button class="button" (click)="modal.dismiss('Cross click')">
+                                          Annuler
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+
+                          </ng-template>
+                        </mat-menu>
+                      </mat-card-actions>
+                      <mat-card-header class="headercard">
+
+                        <mat-card-title>{{division.nom}}: {{division.date | date:'shortDate'}} </mat-card-title>
+
+
+
+                      </mat-card-header>
+                      <mat-card-content class="contentcard">
+
+
+                        <ng-container *ngIf="division.type=='Dossier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <img mat-card-image class="imgfile" src="./assets/img/brand/folder.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+                        </ng-container>
+                        <ng-container *ngIf="division.type=='Fichier'">
+                          <div class="row">
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <img mat-card-image class="imgfile" src="./assets/img/brand/file.png">
+                              </div>
+                            </div>
+                            <div class="col-lg-auto">
+                              <div class="form-group">
+                                <h4>{{division.titre}}:</h4> {{division.description}}
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </ng-container>
+
+
+
+
+                      </mat-card-content>
+
+
+
+
+
+
+
+
+                    </ng-container>
+                  </mat-card>
+                </ng-container>
+              </mat-card>
+            </ng-container>
+          </mat-grid-list>
+        </mat-card>
+
+
+
+
+    <pagination-controls   (pageChange)="pageChanged($event)"></pagination-controls>
+</div>
+    </ng-container>
+      <ng-container *ngIf="!showfile">
+        <div class="pl-lg-4 backgroundForm">
+
+
+          <div class="row" style="margin-left:15%">
+
+            <div class="col-lg-auto ">
+              <div class="form-group">
+              <a href={{pdfsrc}}>
+                <button class="button"  >Télécharger</button>
+            </a>
+
+              </div>
+            </div>
+
+              <div class="col-lg-auto ">
+                <div class="form-group">
+
+                  <button class="button"  (click)="openSendEmail(contentSendEmail )">
+Envoyer
+                    </button>
+                </div>
+              </div>
+          </div>
+        <div class="row" style="margin-left:15%">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <pdf-viewer [src]="pdfsrc"
+                          [render-text]="true"
+                             [original-size]="false"
+             style="width: 1000px; height: 1300px"
+
+              ></pdf-viewer>
+            </div>
+          </div>
+        </div>
+
+        </div>
+        </ng-container>
+        <ng-template #contentSendEmail let-modal class="modal-lg" >
+
+
+
+          <div class="modal-header ">
+            <h4 class="modal-title" id="modal-basic-title">Email</h4>
+            <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" (click)="modal.dismiss('Cross click')">x</button>
+          </div>
+          <div class="modal-body">
+            <form  [formGroup]="myEmailForm" >
+              <div class="pl-lg-4">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <label class="form-control-label">To   :</label>
+                      <input type="email"   formControlName="toEmail"  class="form-control form-control-alternative" placeholder="">
+                           <span class="text-danger"
+                            *ngIf="registerEmailFormControl.toEmail.untouched || registerEmailFormControl.toEmail.errors?.required
+|| registerEmailFormControl.toEmail.errors?.email">
+                            Email is required or invalid
+                        </span>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <label class="form-control-label">Sujet   :</label>
+                      <input type="text"   formControlName="subject"  class="form-control form-control-alternative" placeholder="">
+                       <span class="text-danger"
+                            *ngIf="registerEmailFormControl.subject.untouched || registerEmailFormControl.subject.errors?.required">
+                            Subject is required
+                        </span>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <label class="form-control-label">Corps</label>
+                      <textarea    formControlName="body"  class="form-control form-control-alternative" placeholder="">
+                        </textarea>
+                        <span class="text-danger"
+                            *ngIf="registerEmailFormControl.body.untouched || registerEmailFormControl.body.errors?.required">
+                            Body is required
+                        </span>
+                    </div>
+                  </div>
+
+
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+
+                        <button class="button"  class="button" [disabled]="
+registerEmailFormControl.toEmail.errors?.required ||
+registerEmailFormControl.subject.errors?.required ||
+registerEmailFormControl.body.errors?.required   " (click)="sendEmail(myEmailForm)" >
+
+                          Envoyer
+                      </button>
+
+
+
+
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+
+
+                  <button class="button" (click)="modal.dismiss('Cross click')">
+                    Annuler
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </ng-template>
+  <div class="row">
+
+
+    <div class="col-lg-6">
+      <div class="form-group ">
+        <button class="button" aria-label="Close" aria-hidden="true" (click)="back()">Retour</button>
+      </div>
+    </div>
+  </div>
+</div>
+

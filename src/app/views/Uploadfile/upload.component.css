@@ -1,0 +1,54 @@
+.gallery {
+  /**
+   * Lay out the children of this container with
+   * flexbox, which is horizontal by default.
+   */
+  display: flex;
+
+  /**
+   * Allow the children to wrap to the next "row",
+   * instead of trying to squeeze them all into
+   * a single row.
+   */
+  flex-wrap: wrap;
+
+  width: 478px;
+  padding: 5px;
+  border: 1px solid #D7DBDD;
+}
+
+.photo2 {
+  background-image: url('./assets/img/brand/test.jpg');
+}
+
+.photo3 {
+  background-image: url('./assets/img/brand/test.jpg');
+}
+
+.photo4 {
+  background-image: url('./assets/img/brand/test.jpg');
+}
+
+.photo5 {
+  background-image: url('../assets/img/brand/test.jpg');
+}
+
+.photo6 {
+  background-image: url('./assets/img/brand/test.jpg');
+}
+
+.photo7 {
+  background-image: url('./assets/img/brand/test.jpg');
+}
+
+.photo8 {
+  background-image: url('./assets/img/brand/test.jpg');
+}
+
+.photo9 {
+  background-image: url('./assets/img/brand/test.jpg');
+}
+
+.photo10 {
+  background-image: url('./assets/img/brand/test.jpg');
+}

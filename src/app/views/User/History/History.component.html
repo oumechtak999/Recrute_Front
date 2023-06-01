@@ -1,0 +1,317 @@
+
+<!--
+<form class="backgroundForm" [formGroup]="serviceForm" >
+  <div class="row ">
+    <div class="col-lg-12 b1">
+      <div class="form-group">
+
+      </div>
+
+
+    </div>
+
+  </div>
+  <div class="row">
+
+
+    <div class="col-lg-6">
+      <div class="form-group ">
+
+        <label class="form-control-label" >Nom</label>
+        <input type="text"   formControlName="nom"  class="form-control form-control-alternative" placeholder="">
+        <span class="text-danger"
+              *ngIf="registerFormControl.nom.untouched || registerFormControl.nom.errors?.required">
+                                 Inserer le nom
+                            </span>
+      </div>
+    </div>
+    <div class="col-lg-auto  vertical-center">
+      <div class="form-group ">
+        <button   class="button" [disabled]="
+registerFormControl.nom.errors?.required
+ " (click)="putService(serviceForm)">Enregistrer</button>
+        <button class="button" name="canal" (click)="refresh()" >Annuler</button>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+</form>
+
+
+
+
+  -->
+<ng-container *ngIf="ElementCol==''">
+  <div class="pl-lg-4 backgroundForm">
+    <div class="table-responsive">
+      <table class="table align-items-center table-flush">
+
+        <thead>
+        <tr>
+          <th scope="col">Type</th>
+
+          <th scope="col">Nom</th>
+          <th scope="col">Titre</th>
+          <th scope="col">Description</th>
+          <th scope="col">Date</th>
+          <th scope="col">Action</th>
+        </tr>
+
+        </thead>
+        <tbody *ngFor="let division of divisions | ElementsFilter: searchElement | paginate: configPagination">
+
+        <tr>
+          <td>{{division.type}}</td>
+          <td>{{division.nom}}</td>
+          <td>{{division.titre}}</td>
+          <td>{{division.description}}</td>
+          <td>{{division.date | date:'shortDate'}}</td>
+
+
+          <td>
+            <!-- <button name="supprimer" (click)="delete()">-->
+            <button class="ButtonWithoutBorder" (click)="deleteElement(division.id)"  >
+
+              <mat-icon class="menumargin">delete</mat-icon>
+            </button>
+
+            <button class="ButtonWithoutBorder" (click)="recoverElement(division.id)" >
+              <mat-icon class="menumargin">autorenew</mat-icon>
+
+            </button>
+
+            <!--<button name="modifier" (click)="confirm()">-->
+
+          </td>
+
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <pagination-controls   (pageChange)="pageChanged($event)"></pagination-controls>
+  </div>
+
+
+</ng-container>
+<ng-container *ngIf="ElementCol=='nom'">
+  <div class="pl-lg-4 backgroundForm">
+    <div class="table-responsive">
+      <table class="table align-items-center table-flush">
+
+        <thead>
+        <tr>
+          <th scope="col">Type</th>
+
+          <th scope="col">Nom</th>
+          <th scope="col">Titre</th>
+          <th scope="col">Description</th>
+          <th scope="col">Date</th>
+          <th scope="col">Action</th>
+        </tr>
+
+        </thead>
+        <tbody *ngFor="let division of divisions | ElementsFilter: searchElement | paginate: configPagination">
+
+        <tr>
+          <td>{{division.type}}</td>
+          <td>{{division.nom}}</td>
+          <td>{{division.titre}}</td>
+          <td>{{division.description}}</td>
+          <td>{{division.date | date:'shortDate'}}</td>
+
+
+          <td>
+            <!-- <button name="supprimer" (click)="delete()">-->
+            <button class="ButtonWithoutBorder" (click)="deleteElement(division.id)"  >
+
+              <mat-icon class="menumargin">delete</mat-icon>
+            </button>
+
+            <button class="ButtonWithoutBorder" (click)="recoverElement(division.id)" >
+              <mat-icon class="menumargin">autorenew</mat-icon>
+
+            </button>
+          </td>
+
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <pagination-controls   (pageChange)="pageChanged($event)"></pagination-controls>
+  </div>
+
+
+</ng-container>
+<ng-container *ngIf="ElementCol=='titre'">
+  <div class="pl-lg-4 backgroundForm">
+    <div class="table-responsive">
+      <table class="table align-items-center table-flush">
+
+        <thead>
+        <tr>
+          <th scope="col">Type</th>
+
+          <th scope="col">Nom</th>
+          <th scope="col">Titre</th>
+          <th scope="col">Description</th>
+          <th scope="col">Date</th>
+          <th scope="col">Action</th>
+        </tr>
+
+        </thead>
+        <tbody *ngFor="let division of divisions | ElementsFilter: searchElement | paginate: configPagination">
+
+        <tr>
+          <td>{{division.type}}</td>
+          <td>{{division.nom}}</td>
+          <td>{{division.titre}}</td>
+          <td>{{division.description}}</td>
+          <td>{{division.date | date:'shortDate'}}</td>
+
+
+          <td>
+            <!-- <button name="supprimer" (click)="delete()">-->
+            <button class="ButtonWithoutBorder" (click)="deleteElement(division.id)"  >
+
+              <mat-icon class="menumargin">delete</mat-icon>
+            </button>
+
+            <button class="ButtonWithoutBorder" (click)="recoverElement(division.id)" >
+              <mat-icon class="menumargin">autorenew</mat-icon>
+
+            </button>
+
+
+
+            <!--<button name="modifier" (click)="confirm()">-->
+
+          </td>
+
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <pagination-controls   (pageChange)="pageChanged($event)"></pagination-controls>
+  </div>
+
+
+</ng-container>
+<ng-container *ngIf="ElementCol=='description'">
+  <div class="pl-lg-4 backgroundForm">
+    <div class="table-responsive">
+      <table class="table align-items-center table-flush">
+
+        <thead>
+        <tr>
+          <th scope="col">Type</th>
+
+          <th scope="col">Nom</th>
+          <th scope="col">Titre</th>
+          <th scope="col">Description</th>
+          <th scope="col">Date</th>
+          <th scope="col">Action</th>
+        </tr>
+
+        </thead>
+        <tbody *ngFor="let division of divisions | ElementsFilter: searchElement | paginate: configPagination">
+
+        <tr>
+          <td>{{division.type}}</td>
+          <td>{{division.nom}}</td>
+          <td>{{division.titre}}</td>
+          <td>{{division.description}}</td>
+          <td>{{division.date | date:'shortDate'}}</td>
+
+
+          <td>
+            <!-- <button name="supprimer" (click)="delete()">-->
+            <button class="ButtonWithoutBorder" (click)="deleteElement(division.id)"  >
+
+              <mat-icon class="menumargin">delete</mat-icon>
+            </button>
+
+            <button class="ButtonWithoutBorder" (click)="recoverElement(division.id)" >
+              <mat-icon class="menumargin">autorenew</mat-icon>
+
+            </button>
+
+
+
+            <!--<button name="modifier" (click)="confirm()">-->
+
+          </td>
+
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <pagination-controls   (pageChange)="pageChanged($event)"></pagination-controls>
+  </div>
+
+
+</ng-container>
+<ng-container *ngIf="ElementCol=='date'">
+  <div class="pl-lg-4 backgroundForm">
+    <div class="table-responsive">
+      <table class="table align-items-center table-flush">
+
+        <thead>
+        <tr>
+          <th scope="col">Type</th>
+
+          <th scope="col">Nom</th>
+          <th scope="col">Titre</th>
+          <th scope="col">Description</th>
+          <th scope="col">Date</th>
+          <th scope="col">Action</th>
+        </tr>
+
+        </thead>
+        <tbody *ngFor="let division of divisions | ElementsFilter: searchElement | paginate: configPagination">
+        <tr>
+          <td>{{division.type}}</td>
+          <td>{{division.nom}}</td>
+          <td>{{division.titre}}</td>
+          <td>{{division.description}}</td>
+          <td>{{division.date | date:'shortDate'}}</td>
+
+
+          <td>
+            <!-- <button name="supprimer" (click)="delete()">-->
+            <button class="ButtonWithoutBorder" (click)="deleteElement(division.id)"  >
+
+              <mat-icon class="menumargin">delete</mat-icon>
+            </button>
+
+            <button class="ButtonWithoutBorder" (click)="recoverElement(division.id)" >
+              <mat-icon class="menumargin">autorenew</mat-icon>
+
+            </button>
+
+
+
+            <!--<button name="modifier" (click)="confirm()">-->
+
+          </td>
+
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <pagination-controls   (pageChange)="pageChanged($event)"></pagination-controls>
+
+    <button class="button" aria-label="Close" aria-hidden="true" (click)=" toggleHistory()">Retour</button>
+  </div>
+
+
+</ng-container>
+
+
+

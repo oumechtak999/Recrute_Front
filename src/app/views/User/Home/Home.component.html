@@ -1,0 +1,314 @@
+
+ 
+  
+  
+ 
+    
+  
+  <div class="header bg-gradient-info pb-5 pt-2 pt-md-5">
+    <app-navbar></app-navbar>
+    <div class="container-fluid">
+        
+          
+    </div>
+  </div>
+  <div class="pl-lg-4 backgroundForm">
+
+        
+    <div class="displayMargin">
+        <mat-card  >
+            <mat-grid-list   cols="1" >
+             
+                    <mat-card   *ngFor="let offre of offres | paginate: configPagination"  >
+                        <mat-card >
+                            <mat-card-actions class="actionscard">
+                              <div class="row">
+                                <div class="col-lg-11">
+                                  <div class="form-group">
+                                    <button mat-button (click)="openWriteCandidat(contentAddCandidat)">Postuler</button>
+                                    <ng-template #contentAddCandidat let-modal class="modal-lg" >
+
+
+
+                                        <div class="modal-header ">
+                                          <h4 class="modal-title" id="modal-basic-title">Informations de candidat</h4>
+                                          <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" (click)="modal.dismiss('Cross click')">x</button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <form  [formGroup]="myCandidatForm" >
+                                            <div class="pl-lg-4">
+                                              <div class="row">
+                                                <div class="col-lg-6">
+                                                  <div class="form-group">
+                                                    <label class="form-control-label">Nom : *</label>
+                                                    <input type="text"   formControlName="nom"  class="form-control form-control-alternative" placeholder="">
+                                                
+                                                  </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                  <div class="form-group">
+                                                    <label class="form-control-label"> Prenom : *</label>
+                          
+                                                    <input type="text"   formControlName="prenom"  class="form-control form-control-alternative" placeholder="">
+                                                  </div>
+                                                </div>
+                                              </div>
+                          
+                                              <div class="row">
+                                                <div class="col-lg-auto">
+                                                  <div class="form-group">
+                                                    <label class="form-control-label">Email : *</label>
+                                                    <input type="text"   formControlName="email"  class="form-control form-control-alternative" placeholder="">
+    
+                                                  </div>
+                                                </div>
+                          
+                          
+                                                <div class="col-lg-6">
+                                                  <div class="form-group">
+                                                    <label class="form-control-label">CIN : *</label>
+                                                    <input type="text"   formControlName="cIN"  class="form-control form-control-alternative" placeholder="">
+                    
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              
+                                              <div class="row">
+                                                <div class="col-lg-auto">
+                                                  <div class="form-group">
+                                                    <label class="form-control-label">Telephone  : *</label>
+                                                    <input type="text"   formControlName="telephone"  class="form-control form-control-alternative" placeholder="">
+    
+                                                  </div>
+                                                </div>
+                          
+                          
+                                                <div class="col-lg-6">
+                                                  <div class="form-group">
+                                                    <label class="form-control-label">NiveauEtude  : *</label>
+                                                    <input type="text"   formControlName="niveauEtude"  class="form-control form-control-alternative" placeholder="">
+                                                   
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div class="row">
+                                                <div class="col-lg-auto">
+                                                  <div class="form-group">
+                                                    <label class="form-control-label">Annees d'experience   : *</label>
+                                                    <input type="number"   formControlName="anneesExperience"  class="form-control form-control-alternative" placeholder="">
+    
+                                                  </div>
+                                                </div>
+                          
+                          
+                                                <div class="col-lg-6">
+                                                  <div class="form-group">
+                                                    <label class="form-control-label">Dernier employeur   : *</label>
+                                                    <input type="text"   formControlName="dernierEmployeur"  class="form-control form-control-alternative" placeholder="">
+                                                   
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-control-label">Cv : *</label>
+                                                        <input type="file"   formControlName="path"  class="form-control form-control-alternative" placeholder="">
+                                                         
+                                                      </div>
+                                                </div>
+                                              </div>
+                          
+                                              <div class="row">
+                                                <div class="col-lg-6">
+                                                  <div class="form-group">
+                          
+                                                    <button class="button" [disabled]="
+                                                    registerFormControl.nom.errors?.required ||
+                                                    registerFormControl.prenom.errors?.required ||
+                                                    registerFormControl.email.errors?.required ||
+                                                    registerFormControl.cIN.errors?.required ||
+                                                    registerFormControl.telephone.errors?.required ||
+                                                    registerFormControl.niveauEtude.errors?.required ||
+                                                    registerFormControl.dernierEmployeur.errors?.required ||
+                                                     registerFormControl.path.errors?.required ||
+                                                    registerFormControl.anneesExperience.errors?.required  "   (click)="postuler(myCandidatForm)" >
+                          
+                                                      Enregistrer
+                                                    </button>
+                          
+                                                  </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                  <div class="form-group">
+                          
+                          
+                                                    <button class="button" (click)="modal.dismiss('Cross click')">
+                                                      Annuler
+                                                    </button>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </form>
+                                        </div>
+                          
+                                      </ng-template>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </mat-card-actions>
+                            <mat-card-header class="headercard">
+      
+                              <mat-card-title>Titre: {{offre.titre}} </mat-card-title>
+      
+      
+      
+                            </mat-card-header>
+                            <mat-card-content class="contentcard">
+      
+      
+                                  <div class="row">
+                                    <div class="col-lg-auto">
+                                      <div class="form-group">
+                                        <img mat-card-image class="imgfile" src="../assets/img/brand/folder.png">
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-auto">
+                                      <div class="form-group">
+                                        <h4>Entreprise: {{offre.sousTitre}}</h4>
+                                        <h4>{{offre.sousTitre}}:</h4> {{offre.description}}
+                                        <h5>Ville: {{offre.ville}} Années d'experience: {{offre.anneesExperience}}  Type de contrat: {{offre.typeContrat}}</h5>
+                                        <h5> Date: {{offre.date | date:'shortDate'}}</h5>
+
+                                    </div>
+                                    </div>
+                                  </div>
+                              
+                                
+      
+      
+      
+      
+                            </mat-card-content>
+      
+      
+      
+      
+      
+      
+      
+      
+                         
+                        </mat-card>
+                      
+                    </mat-card>
+      
+                 
+  
+              
+              
+            </mat-grid-list>
+          </mat-card>
+  
+      
+  
+  
+  
+      <pagination-controls   (pageChange)="pageChanged($event)"></pagination-controls>
+  </div>
+     
+
+      <!-- <ng-template #contentSendEmail let-modal class="modal-lg" >
+  
+  
+  
+            <div class="modal-header ">
+              <h4 class="modal-title" id="modal-basic-title">Email</h4>
+              <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" (click)="modal.dismiss('Cross click')">x</button>
+            </div>
+            <div class="modal-body">
+              <form  [formGroup]="myEmailForm" >
+                <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label class="form-control-label">To   :</label>
+                        <input type="email"   formControlName="toEmail"  class="form-control form-control-alternative" placeholder="">
+                             <span class="text-danger"
+                              *ngIf="registerEmailFormControl.toEmail.untouched || registerEmailFormControl.toEmail.errors?.required
+  || registerEmailFormControl.toEmail.errors?.email">
+                              Email is required or invalid
+                          </span>
+                      </div>
+                    </div>
+  
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label class="form-control-label">Sujet   :</label>
+                        <input type="text"   formControlName="subject"  class="form-control form-control-alternative" placeholder="">
+                         <span class="text-danger"
+                              *ngIf="registerEmailFormControl.subject.untouched || registerEmailFormControl.subject.errors?.required">
+                              Subject is required
+                          </span>
+                      </div>
+                    </div>
+  
+                  </div>
+  
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label class="form-control-label">Corps</label>
+                        <textarea    formControlName="body"  class="form-control form-control-alternative" placeholder="">
+                          </textarea>
+                          <span class="text-danger"
+                              *ngIf="registerEmailFormControl.body.untouched || registerEmailFormControl.body.errors?.required">
+                              Body is required
+                          </span>
+                      </div>
+                    </div>
+  
+  
+                  </div>
+  
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group">
+  
+                          <button class="button"  class="button" [disabled]="
+  registerEmailFormControl.toEmail.errors?.required ||
+  registerEmailFormControl.subject.errors?.required ||
+  registerEmailFormControl.body.errors?.required   " (click)="sendEmail(myEmailForm)" >
+  
+                            Envoyer
+                        </button>
+  
+  
+  
+  
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+  
+  
+                    <button class="button" (click)="modal.dismiss('Cross click')">
+                      Annuler
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+  
+      </ng-template>-->
+   
+  </div>
+    <div class="container-fluid">
+      <app-footer></app-footer>
+    </div>

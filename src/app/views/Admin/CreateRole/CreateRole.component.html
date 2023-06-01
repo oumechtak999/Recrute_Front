@@ -1,0 +1,429 @@
+<div class="header bg-gradient-info pb-5 pt-2 pt-md-5">
+  <div class="container-fluid">
+    <!--  <form>
+        <div class="input-group no-border">
+           <input type="text" value="" class="form-control" placeholder="Search...">
+           <div class="input-group-append">
+             <div class="input-group-text">
+               <i class="ni ni-zoom-split-in"></i>
+             </div>
+           </div>
+         </div>
+       </form>-->
+      <div class="row">
+
+        <div class="col-lg-auto">
+          <input type="text" class="form-control"
+                 [(ngModel)]="searchNameUser" placeholder="Rechercher"
+                 autofocus>
+
+        </div>
+
+      </div>
+  </div>
+</div>
+<!--
+<form class="backgroundForm" [formGroup]="serviceForm" >
+  <div class="row ">
+    <div class="col-lg-12 b1">
+      <div class="form-group">
+
+      </div>
+
+
+    </div>
+
+  </div>
+  <div class="row">
+
+
+    <div class="col-lg-6">
+      <div class="form-group ">
+
+        <label class="form-control-label" >Nom</label>
+        <input type="text"   formControlName="nom"  class="form-control form-control-alternative" placeholder="">
+        <span class="text-danger"
+              *ngIf="registerFormControl.nom.untouched || registerFormControl.nom.errors?.required">
+                                 Inserer le nom
+                            </span>
+      </div>
+    </div>
+    <div class="col-lg-auto  vertical-center">
+      <div class="form-group ">
+        <button   class="button" [disabled]="
+registerFormControl.nom.errors?.required
+ " (click)="putService(serviceForm)">Enregistrer</button>
+        <button class="button" name="canal" (click)="refresh()" >Annuler</button>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+</form>
+
+
+
+
+  -->
+<ng-container *ngIf="showRoles">
+<div class="pl-lg-4 backgroundForm">
+  <div class="table-responsive">
+    <table class="table align-items-center table-flush">
+
+      <thead>
+      <tr>
+
+        <th scope="col">Nom</th>
+        <th scope="col">Prenom</th>
+        <th scope="col">Cin</th>
+        <th scope="col">Email</th>
+        <th scope="col">Telephone</th>
+        <th scope="col">Type d'utilisateur</th>
+        <th scope="col">Action</th>
+      </tr>
+
+      </thead>
+      <tbody *ngFor="let user of users | UsersFilter: searchNameUser | paginate: configPagination">
+
+      <tr>
+        <td>{{user.nom}}</td>
+        <td>{{user.prenom}}</td>
+        <td>{{user.cin}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.phoneNumber}}</td>
+        <td>{{user.userType}}</td>
+
+        <td>
+          <!-- <button name="supprimer" (click)="delete()">-->
+          <button class="ButtonWithoutBorder"  (click)="openWriteUser(contentModifyUser,user.id)" >
+            <mat-icon>autorenew</mat-icon>
+
+          </button>
+          <button class="ButtonWithoutBorder"  (click)="deleteUser(user.id)" >
+            <mat-icon>delete</mat-icon>
+
+          </button>
+          <ng-container *ngIf="user.userType=='Reader'">
+          <button class="ButtonWithoutBorder"  (click)="getRoles(user.id)"  >
+            <mat-icon>visibility</mat-icon>
+
+          </button>
+          <button class="ButtonWithoutBorder" (click)="openWriteRole(contentAddRole )" >
+            <mat-icon>add_circle</mat-icon>
+
+          </button>
+            </ng-container>
+          <ng-template #contentModifyUser let-modal class="modal-lg" >
+
+
+
+            <div class="modal-header ">
+              <h4 class="modal-title" id="modal-basic-title">Modifier Utilisateur</h4>
+              <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" (click)="modal.dismiss('Cross click')">x</button>
+            </div>
+            <div class="modal-body">
+              <div class="pl-lg-4">
+                <div class="row">
+
+
+                  <div class="col-lg-6">
+                    <div class="form-group ">
+
+                      <label class="form-control-label" >Nom<span class="text-danger" > *</span></label>
+                      <input type="text" required [(ngModel)]="userToModify[0].nom" #nom="ngModel"    class="form-control form-control-alternative" placeholder="">
+
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+
+                      <label class="form-control-label" >Prenom<span class="text-danger" > *</span></label>
+                      <input type="text" required  [(ngModel)]="userToModify[0].prenom" #prenom="ngModel"  class="form-control form-control-alternative" placeholder="">
+
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+
+                      <label class="form-control-label" >CIN<span class="text-danger" > *</span></label>
+                      <input type="text"  required [(ngModel)]="userToModify[0].cin" #cin="ngModel"   class="form-control form-control-alternative" placeholder="">
+
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+
+                      <label class="form-control-label" >Email<span class="text-danger" > *</span></label>
+                      <input type="text" required  [(ngModel)]="userToModify[0].email" #email="ngModel" class="form-control form-control-alternative" placeholder="">
+
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+
+                      <label class="form-control-label" >Telephone<span class="text-danger" > *</span></label>
+                      <input type="text" required  [(ngModel)]="userToModify[0].phoneNumber" #phoneNumber="ngModel"  class="form-control form-control-alternative" placeholder="">
+
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="form-group">
+
+                      <label class="form-control-label" >Type d'utilsateur<span class="text-danger" > *</span></label>
+                        <input type="text"   [(ngModel)]="userToModify[0].userType"   class="form-control form-control-alternative" placeholder="" readonly>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+
+                      <label class="form-control-label" >UserName<span class="text-danger" > *</span></label>
+                      <input type="text" required [(ngModel)]="userToModify[0].userName" #userName="ngModel"  class="form-control form-control-alternative" placeholder="">
+
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+
+                      <label class="form-control-label" >Password<span class="text-danger" > *</span></label>
+                      <input type="text" required [(ngModel)]="userToModify[0].passwordHash" #passwordHash="ngModel"  class="form-control form-control-alternative" placeholder="Saisir le nouveau mot de passe">
+
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+
+                      <button class="button"[disabled]="nom.errors?.required
+                      ||prenom.errors?.required ||cin.errors?.required ||email.errors?.required
+                      ||phoneNumber.errors?.required ||userName.errors?.required ||passwordHash.errors?.required" (click)="modifyUser(userToModify[0])" >
+
+                        Enregistrer
+                      </button>
+
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+
+
+                      <button class="button" (click)="modal.dismiss('Cross click')">
+                        Annuler
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </ng-template>
+          <ng-template #contentAddRole let-modal class="modal-lg" >
+
+
+
+              <div class="modal-header ">
+                <h4 class="modal-title" id="modal-basic-title">Role</h4>
+                <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" (click)="modal.dismiss('Cross click')">x</button>
+              </div>
+              <div class="modal-body">
+                <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label">Nom   :</label>
+                        <input type="text"  [(ngModel)]="user.nom" class="form-control form-control-alternative" readonly >
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label"> Prnom  :</label>
+                        <input type="text" [(ngModel)]="user.prenom" class="form-control form-control-alternative" readonly >
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label">Rechercher un dossier</label>
+                        <input type="text" class="form-control" id="search-text"
+                               [(ngModel)]="searchNameDevision" placeholder="Enter le nom de dossier cherché"
+                               autofocus>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label">Dossier<span class="text-danger" > *
+
+                                </span></label>
+                        <ng-container *ngIf="division.id==''">
+                          <input type="text" class="form-control"
+                                 readonly placeholder="aucun dossier selectionné">
+                        </ng-container>
+
+                        <ng-container *ngIf="division.id!=''">
+                          <input type="text" class="form-control"
+                                 readonly value="{{division.nom}}" >
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <ul class="list-group list-group-flush">
+                          <ng-container *ngIf="searchNameDevision!=''">
+                            <table>
+                              <tr *ngFor="let division of divisions| ElementsFilter: searchNameDevision">
+                                <td><label class="form-control-label">{{division.nom}}</label></td>
+                                <td>
+                                  <button name="choisir" (click)="addDivisionId(division)"><img src="./assets/img/brand/add-icon.png"
+                                                                                          height="20" width="20"/></button>
+                                </td>
+                              </tr>
+                            </table>
+                          </ng-container>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label">Rechercher un groupe</label>
+                        <input type="text" class="form-control"
+                               [(ngModel)]="searchNameService" placeholder="Enter le nom de groupe cherché"
+                               autofocus>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label">Groupe
+                          <span class="text-danger" > *
+
+                                </span></label>
+                        <ng-container *ngIf="service.id==''">
+                          <input type="text" class="form-control"
+                                 readonly placeholder="aucun groupe selectionné">
+                        </ng-container>
+
+                        <ng-container *ngIf="service.id!=''">
+                          <input type="text" class="form-control"
+                                 readonly value="{{service.nom}}" >
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <ul class="list-group list-group-flush">
+                          <ng-container *ngIf="searchNameService!=''">
+                            <table>
+
+                              <tr *ngFor="let service of services| ServicesFilter: searchNameService">
+                                <td><label class="form-control-label">{{service.nom}}</label></td>
+                                <td>
+                                  <button name="choisir" (click)="addServiceId(service)"><img src="./assets/img/brand/add-icon.png"
+                                                                                                height="20" width="20"/></button>
+                                </td>
+                              </tr>
+                            </table>
+                          </ng-container>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group">
+
+                          <button class="button"[disabled]="service.id==null || division.id==null" (click)="addRole(user.id)" >
+
+                          Enregistrer
+                        </button>
+
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+
+
+                        <button class="button" (click)="modal.dismiss('Cross click')">
+                          Annuler
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+          </ng-template>
+
+          <!--<button name="modifier" (click)="confirm()">-->
+
+        </td>
+
+      </tr>
+
+      </tbody>
+    </table>
+  </div>
+  <pagination-controls   (pageChange)="pageChanged($event)"></pagination-controls>
+</div>
+
+
+  </ng-container>
+<ng-container *ngIf="!showRoles">
+
+
+  <div class="pl-lg-4">
+    <div class="table-responsive">
+      <table class="table align-items-center table-flush">
+
+        <thead>
+        <tr>
+          <th scope="col">Description</th>
+          <th scope="col">Dossier</th>
+          <th scope="col">Groupe</th>
+          <th scope="col">Actions</th>
+        </tr>
+
+        </thead>
+        <tbody *ngFor="let userRole of userRoles | paginate: configPaginationRoles">
+        <tr>
+          <td>{{userRole.role.description}}</td>
+          <td>{{userRole.role.element.nom}}</td>
+          <td>{{userRole.role.service.nom}}</td>
+
+          <td>
+            <button class="ButtonWithoutBorder" (click)=" deleteUserRole(userRole.id)">
+              <mat-icon>delete</mat-icon>
+
+            </button>
+          </td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <pagination-controls (pageChange)="configPaginationRoles($event)"></pagination-controls>
+    <button class="button" aria-label="Close" aria-hidden="true" (click)=" toggleRoles()">Retour</button>
+
+  </div>
+
+</ng-container>
