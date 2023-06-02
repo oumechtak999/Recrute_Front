@@ -92,6 +92,11 @@ import { CvService } from './services/Cv/Cv.service';
 import { OffreService } from './services/Offre/Offre.service';
 import { HomeComponent } from './views/User/Home/Home.component';
 import { OffreCandidatService } from './services/OffreCandidat/OffreCandidat.service';
+import { AdminPageComponent } from './views/Admin/AdminPage/AdminPage.component';
+import { CandidatsFilterByTelephonePipe } from './ infrastructure/FilterPipes/CandidatFilters/CandidatsFilterByTelephone.pipe';
+import { CandidatsFilterByEmailPipe } from './ infrastructure/FilterPipes/CandidatFilters/CandidatsFilterByEmail.pipe';
+import { CandidatsFilterByPrenomPipe } from './ infrastructure/FilterPipes/CandidatFilters/CandidatsFilterByPrenom.pipe';
+import { CandidatsFilterByNomPipe } from './ infrastructure/FilterPipes/CandidatFilters/CandidatsFilterByNom.pipe';
 
 
 @NgModule({
@@ -130,7 +135,12 @@ import { OffreCandidatService } from './services/OffreCandidat/OffreCandidat.ser
     UploadComponent,
     AuthLayoutComponent,
     HomeComponent,
+    AdminPageComponent,
     ConfirmDialogComponent,
+    CandidatsFilterByNomPipe,
+    CandidatsFilterByPrenomPipe,
+    CandidatsFilterByEmailPipe,
+    CandidatsFilterByTelephonePipe,
   ],
 
   entryComponents: [ConfirmDialogComponent],

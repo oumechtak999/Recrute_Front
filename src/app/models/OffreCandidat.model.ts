@@ -1,4 +1,4 @@
-export class Offre {
+export class OffreCandidat {
     id: string;
     offreId: string;
     candidatId: string;

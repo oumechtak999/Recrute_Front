@@ -21,6 +21,13 @@ import { FileUploadService } from 'src/app/services/FileUpload/FileUpload.servic
 import { DialogService } from 'src/app/Shared/dialog.service';
 import { UploadService } from 'src/app/services/Upload/Upload.service';
 import { Candidat } from 'src/app/models/Candidat.model';
+import { CandidatService } from 'src/app/services/Candidat/Candidat.service';
+import { Cv } from 'src/app/models/Cv.model';
+import { OffreCandidatService } from 'src/app/services/OffreCandidat/OffreCandidat.service';
+import { CvService } from 'src/app/services/Cv/Cv.service';
+import { OffreCandidat } from 'src/app/models/OffreCandidat.model';
+import { Email } from 'src/app/models/Email.model';
+import { EmailService } from 'src/app/services/Email/Email.service';
 
 
 @Component({
@@ -36,6 +43,10 @@ export class HomeComponent implements OnInit {
   //.replace(/ GMT.*^/, '');
   constructor(
     private offreService: OffreService,
+    private candidatService: CandidatService,
+    private offreCandidatService: OffreCandidatService,
+    private cvService: CvService,
+    private emailService: EmailService,
     
     private fileUploadService: FileUploadService,
               private fb: FormBuilder,
@@ -46,6 +57,11 @@ export class HomeComponent implements OnInit {
     config.backdrop = false;
   }
   candidat: Candidat = null;
+  cv: Cv = null;
+  offreCandidat: OffreCandidat = null;
+  idcandidatCreated: string;
+  idCvCreated: string;
+  idOffreCandidatCreated: string;
   file: any;
   uploadFile: File | null;
   uploadFileLabel: string | undefined = 'Choose an image to upload';
@@ -61,6 +77,7 @@ export class HomeComponent implements OnInit {
   offres: any[];
   myCandidatForm: FormGroup;
   async ngOnInit() {
+
     // this.typeUser = sessionStorage.getItem('userType');
      // this.activeModal = new NgbActiveModal();
  
@@ -75,6 +92,19 @@ export class HomeComponent implements OnInit {
    }
    pageChanged(event) {
     this.configPagination.currentPage = event;
+  }
+  handleFileInput(files: FileList) {
+    if (files.length > 0) {
+      this.uploadFile = files.item(0);
+      this.uploadFileLabel = this.uploadFile?.name;
+    }
+  }
+  async upload() {
+    const formData = new FormData();
+
+    formData.append(this.uploadFile.name, this.uploadFile);
+    this.resultUpload = await this.uploadService.CreateAsync(formData);
+
   }
   getCandidatForm() {
     this.myCandidatForm = this.fb.group({
@@ -108,12 +138,52 @@ export class HomeComponent implements OnInit {
     this.candidat.email = form.value.email;
     this.candidat.dernierEmployeur = form.value.dernierEmployeur;
     this.candidat.anneesExperience = form.value.anneesExperience;
-    console.log(this.candidat);
-    console.log(form.value);
+    this.idcandidatCreated= await this.candidatService.CreateAsync(this.candidat);
+
   }
-  async putOffreCandidat(form: FormGroup) {
+  async putCv(cv: Cv) {
+
+    this.idCvCreated= await this.cvService.CreateAsync(cv);
+
+  }
+  async putOffreCandidat(offreCandidat: OffreCandidat) {
+
+    this.idOffreCandidatCreated= await this.offreCandidatService.CreateAsync(offreCandidat);
+
+  }
+  async sendEmail(toEmail: string,
+    subject : string,
+    body : string) {
+
+    let email = new Email();
+    email.body = body;
+    email.subject = subject;
+    email.toEmail = toEmail;
+    console.log(email);
+    await this.emailService.CreateAsync(email);
+    alert('Email envoyé !!');
+    this.modalService.dismissAll();
+
+  }
+  async putCandidature(form: FormGroup,id:string,titre:string) {
    // console.log(form);
+
     await this.putCandidat(form);
+    this.cv=new Cv();
+    this.cv.titre = form.value.nom+form.value.prenom;
+    const formData = new FormData();
+      formData.append(this.uploadFile.name, this.uploadFile);
+      this.resultUpload = await this.uploadService.CreateAsync(formData);
+      console.log(this.resultUpload[0].url);
+      this.cv.path = this.resultUpload[0].url;
+      this.cv.candidatId = this.idcandidatCreated;
+      await this.putCv(this.cv);
+      this.offreCandidat=new OffreCandidat();
+      this.offreCandidat.candidatId = this.idcandidatCreated;
+      this.offreCandidat.offreId = id;
+      await this.putOffreCandidat(this.offreCandidat);
+      let subject = "Bonjour"+form.value.nom+form.value.prenom+", vous avez postulé avec succès pour l'offre "+titre;
+      await this.sendEmail(form.value.email,"Confirmation de candidature ",subject);
    /* this.element = new Element();
     this.element = form.value;
     this.element.pereId = id;
@@ -214,13 +284,13 @@ export class HomeComponent implements OnInit {
 
   }
 */
-async postuler(form: FormGroup) {
+async postuler(form: FormGroup,id:string,titre:string) {
   this.modalService.dismissAll();
   
   this.dialogService.openConfirmDialog('Êtes-vous sûr que vous avez postuler cet offre ?')
     .afterClosed().subscribe(async res => {
     if (res) {
-      await this.putOffreCandidat(form);
+      await this.putCandidature(form,id);
       //window.location.reload();
     }
   });

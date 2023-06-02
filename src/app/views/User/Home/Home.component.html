@@ -113,7 +113,7 @@
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label class="form-control-label">Cv : *</label>
-                                                        <input type="file"   formControlName="path"  class="form-control form-control-alternative" placeholder="">
+                                                        <input type="file"   formControlName="path" (change)="handleFileInput($any($event.target).files)" class="form-control form-control-alternative" placeholder="">
                                                          
                                                       </div>
                                                 </div>
@@ -132,7 +132,7 @@
                                                     registerFormControl.niveauEtude.errors?.required ||
                                                     registerFormControl.dernierEmployeur.errors?.required ||
                                                      registerFormControl.path.errors?.required ||
-                                                    registerFormControl.anneesExperience.errors?.required  "   (click)="postuler(myCandidatForm)" >
+                                                    registerFormControl.anneesExperience.errors?.required  "   (click)="postuler(myCandidatForm,offre.id,offre.titre)" >
                           
                                                       Enregistrer
                                                     </button>
