@@ -11,14 +11,8 @@ import {DashboardComponent} from '../../pages/dashboard/dashboard.component';
 import {MapsComponent} from '../../pages/maps/maps.component';
 import {UserProfileComponent} from '../../pages/user-profile/user-profile.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {CreateUsersComponent} from '../../views/Admin/CreateUsers/CreateUsers.component';
-
-import {CreateServiceComponent} from '../../views/Admin/CreateService/CreateService.component';
 import {NgxPaginationModule} from 'ngx-pagination';
-import {ServicesFilterPipe} from '../../ infrastructure/FilterPipes/ServicesFilter.pipe';
-import {CreateRoleComponent} from '../../views/Admin/CreateRole/CreateRole.component';
-import {UsersFilterPipe} from '../../ infrastructure/FilterPipes/UsersFilter.pipe';
-import {ElementsFilterPipe} from '../../ infrastructure/FilterPipes/ElementsFilter.pipe';
+
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -27,46 +21,51 @@ import {CustomMaterialModule} from '../../ infrastructure/DialogFeature/CustomMa
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatListModule} from '@angular/material/list';
+import { AdminPageComponent } from 'src/app/views/Admin/AdminPage/AdminPage.component';
+import { ComponentsModule } from "../../components/components.module";
+import { CandidatsFilterByNomPipe } from 'src/app/ infrastructure/FilterPipes/CandidatFilters/CandidatsFilterByNom.pipe';
+import { CandidatsFilterByPrenomPipe } from 'src/app/ infrastructure/FilterPipes/CandidatFilters/CandidatsFilterByPrenom.pipe';
+import { CandidatsFilterByEmailPipe } from 'src/app/ infrastructure/FilterPipes/CandidatFilters/CandidatsFilterByEmail.pipe';
+import { CandidatsFilterByTelephonePipe } from 'src/app/ infrastructure/FilterPipes/CandidatFilters/CandidatsFilterByTelephone.pipe';
 
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(AdminLayoutRoutes),
-    FormsModule,
-    NgbModule,
-    HttpClientModule,
-    NgbModule,
-    ClipboardModule,
-    ReactiveFormsModule,
-    NgxPaginationModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatIconModule,
-    CustomMaterialModule,
-
-    MatToolbarModule,
-    MatButtonModule,
-    MatListModule,
-  ],
     exports: [
-        UsersFilterPipe,
-        ElementsFilterPipe
+     
     ],
-  declarations: [
-    DashboardComponent,
-    UserProfileComponent,
-    MapsComponent,
-    CreateUsersComponent,
-    CreateServiceComponent,
-    CreateRoleComponent,
-    ServicesFilterPipe,
-    UsersFilterPipe,
-    ElementsFilterPipe
-  ]
+    declarations: [
+        DashboardComponent,
+        UserProfileComponent,
+        MapsComponent,
+        AdminPageComponent,
+        CandidatsFilterByNomPipe,
+        CandidatsFilterByPrenomPipe,
+        CandidatsFilterByEmailPipe,
+        CandidatsFilterByTelephonePipe,
+        
+    ],
+    imports: [
+      ComponentsModule,
+        CommonModule,
+        RouterModule.forChild(AdminLayoutRoutes),
+        FormsModule,
+        NgbModule,
+        HttpClientModule,
+        NgbModule,
+        ClipboardModule,
+        ReactiveFormsModule,
+        NgxPaginationModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatIconModule,
+        CustomMaterialModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatListModule
+    ]
 })
 
 export class AdminLayoutModule {

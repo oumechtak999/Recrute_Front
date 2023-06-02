@@ -53,61 +53,7 @@ export abstract class AsyncRepository implements IAsyncRepository , Resolve<any>
       });
 
     }
-    // UpdateAsync(entity: any, Id:any): Promise<void> {
-    //     //return  this._httpClient.put(`${this.api_url}/${Id}`, entity)
-    //     return  this._httpClient.put(`${this.api_url}/${Id}`, entity)
-    //         .toPromise()
-    //         .then((res: message) => { // Success
-    //                 this.GetAllAsync();
-    //                 this.ShowMessage(res.message,true);
-    //             },
-    //             () => { // Error
-    //                 this.GetAllAsync();
-    //                 this.ShowMessage("server is not responding",false);
-    //             });
-    // }
-    UpdateAsync(entity: any): any {
-
-      return new Promise ((resolve, reject) => {
-        (this._httpClient.put(this.api_url, entity)).subscribe((response: any) => {
-          this.onItemChange.next(response);
-          resolve(response);
-        }, reject);
-      });
-
-    }
-    UpdateDetailsAsync(entity: any, Id:any): Promise<void> {
-        return  this._httpClient.put(`${this.api_url}/${Id}/Details`, entity)
-            .toPromise()
-            .then((res: message) => { // Success
-                    this.GetAllAsync();
-                    this.ShowMessage(res.message,true);
-                },
-                () => { // Error
-                    this.GetAllAsync();
-                    this.ShowMessage("server is not responding",false);
-                });
-    }
-    // PatchAsync(entity: any, Id:any): Promise<void> {
-    //     return  this._httpClient.patch(`${this.api_url}/${Id}`, entity)
-    //         .toPromise()
-    //         .then((res: message) => { // Success
-    //                 this.GetAllAsync();
-    //                 this.ShowMessage(res.message,true);
-    //             },
-    //             () => { // Error
-    //                 this.GetAllAsync();
-    //                 this.ShowMessage("server is not responding",false);
-    //             });
-    // }
-    PatchAsync(entity: any): any {
-      return new Promise ((resolve, reject) => {
-        (this._httpClient.patch(this.api_url, entity)).subscribe((response: any) => {
-          this.onItemChange.next(response);
-          resolve(response);
-        }, reject);
-      });
-    }
+  
     DeleteAsync(id: any): Promise<void> {
         return this._httpClient.delete(`${this.api_url}/${id}`)
             .toPromise()

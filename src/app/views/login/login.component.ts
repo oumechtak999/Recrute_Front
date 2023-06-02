@@ -1,9 +1,9 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import {User} from '../../models/User.model';
 import {AuthenticationService} from '../../services/Authentications/Authentication.service';
 import {Router} from '@angular/router';
+import { Admin } from 'src/app/models/Admin.model';
 
 
 @Component({
@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   loginForm: FormGroup;
 
-  user: User = null;
+  admin: Admin = null;
   idtockenCreated: any;
   responsedata: any;
 
@@ -49,10 +49,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   async login(form: FormGroup) {
     if (this.loginForm.valid) {
-      this.user = new User();
-      this.user = form.value;
+      this.admin = new Admin();
+      this.admin = form.value;
 
-      this.idtockenCreated = await this.authenticationService.userAuthentication(this.user);
+      this.idtockenCreated = await this.authenticationService.userAuthentication(this.admin);
       console.log(this.idtockenCreated);
       if (this.idtockenCreated.id == null) {
         alert('Username ou mot de passe est incorrecte !!');
@@ -61,10 +61,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.responsedata = this.idtockenCreated;
         sessionStorage.setItem('token', this.responsedata.token);
        sessionStorage.setItem('userid', this.responsedata.id);
-        sessionStorage.setItem('userType', this.responsedata.userType);
-        this.authenticationService.updatemenu.next();
-       
-          this.route.navigate(['Create-Users']);
+          this.route.navigate(['Admin']);
 
        
 

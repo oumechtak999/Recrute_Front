@@ -1,7 +1,7 @@
 import {Component, DoCheck, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../../services/Authentications/Authentication.service';
-import {CreateUsersComponent} from '../../views/Admin/CreateUsers/CreateUsers.component';
+
 
 declare interface RouteInfo {
   path: string;
@@ -14,9 +14,6 @@ declare interface RouteInfo {
 export let ROUTES: RouteInfo[] = [];
 
 export let ROUTESADMIN: RouteInfo[] = [
-  {path: '/Create-Users', title: 'Ajouter utilisateur', icon: 'ni-tv-2 text-primary', class: ''},
-  {path: '/Create-Service', title: 'Ajouter groupe', icon: 'ni-tv-2 text-primary', class: ''},
-  {path: '/Create-Role', title: 'Ajouter role', icon: 'ni-tv-2 text-primary', class: ''}
 ];
 
 
@@ -39,16 +36,16 @@ export class SidebarComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
-    if (this.router.url == '/login') {
-      this.displaymenu = false;
-    } else {
-      this.displaymenu = true;
-    }
+    //if (this.router.url == '/login') {
+      //this.displaymenu = false;
+    //} else {
+      //this.displaymenu = true;
+    //}
   }
 
   ngOnInit(): void {
     //this.menuItems = ROUTES.filter(menuItem => menuItem);
-    this.router.events.subscribe((event) => {
+   /* this.router.events.subscribe((event) => {
       this.isCollapsed = true;
     });
     this.service.updatemenu.subscribe(res => {
@@ -56,9 +53,9 @@ export class SidebarComponent implements OnInit, DoCheck {
       this.LoadMenu();
     });
     this.MenuDisplay();
-    this.LoadMenu();
+    this.LoadMenu();*/
   }
-
+/*
   MenuDisplay() {
     if (this.service.GetToken() != '') {
       this.currentrole = this.service.GetRolebyToken(this.service.GetToken());
@@ -84,5 +81,5 @@ export class SidebarComponent implements OnInit, DoCheck {
       }
 
     }
-  }
+  }*/
 }

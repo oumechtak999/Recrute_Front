@@ -7,6 +7,5 @@ import {LoginComponent} from '../../views/login/login.component';
 
 
 export const AuthLayoutRoutes: Routes = [
-    { path: 'login',          component: LoginComponent },
-    { path: 'register',       component: RegisterComponent }
+    { path: 'login',          component: LoginComponent }
 ];

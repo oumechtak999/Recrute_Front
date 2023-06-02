@@ -7,8 +7,7 @@ export interface IAsyncRepository {
 
     CreateAsync(entity: any): Promise<void>;
 
-    UpdateAsync(entity: any, Id:any): Promise<void>;
-    PatchAsync(entity: any, Id:any): Promise<void>;
+    
 
     DeleteAsync(id: any): Promise<void>;
 

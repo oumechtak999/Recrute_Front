@@ -9,7 +9,6 @@ import {UserLayoutComponent} from './layouts/user-layout/user-layout.component';
 
 
 import {AuthGuard} from './Shared/auth.guard';
-import {RoleGuard} from './Shared/role.guard';
 import {UserGuard} from './Shared/user.guard';
 
 
@@ -17,12 +16,8 @@ import {AdminGuard} from './Shared/admin.guard';
 
 
 const routes: Routes = [
+  
   {
-    path: '',
-  //  redirectTo: '/login',
-    pathMatch: 'full',
-    //canActivate: [AuthGuard]
-  },/*{
     path: '',
     component:  AdminLayoutComponent,
     children: [
@@ -41,7 +36,7 @@ const routes: Routes = [
         path: '',
         loadChildren: () => import('src/app/layouts/user-layout/user-layout.module').then(m => m.UserLayoutModule)
       }
-    ], canActivate: [UserGuard]
+    ], //canActivate: [UserGuard]
   },
   {
     path: '',
@@ -52,7 +47,7 @@ const routes: Routes = [
         loadChildren: () => import('src/app/layouts/auth-layout/auth-layout.module').then(m => m.AuthLayoutModule)
       }
     ]
-  }*/
+  }
 
 ];
 

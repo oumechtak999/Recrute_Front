@@ -151,6 +151,12 @@ export class HomeComponent implements OnInit {
     this.idOffreCandidatCreated= await this.offreCandidatService.CreateAsync(offreCandidat);
 
   }
+  login()
+  async login() {
+
+    this.route.navigate(['login']);
+
+  }
   async sendEmail(toEmail: string,
     subject : string,
     body : string) {
@@ -184,113 +190,16 @@ export class HomeComponent implements OnInit {
       await this.putOffreCandidat(this.offreCandidat);
       let subject = "Bonjour"+form.value.nom+form.value.prenom+", vous avez postulé avec succès pour l'offre "+titre;
       await this.sendEmail(form.value.email,"Confirmation de candidature ",subject);
-   /* this.element = new Element();
-    this.element = form.value;
-    this.element.pereId = id;
-    if (this.element.type === 'Fichier') {
-      const formData = new FormData();
-
-      formData.append(this.uploadFile.name, this.uploadFile);
-      this.resultUpload = await this.uploadService.CreateAsync(formData);
-
-      console.log(this.resultUpload[0].url);
-
-
-      this.element.path = this.resultUpload[0].url;
-    }
-
-    this.element.createurId = sessionStorage.getItem('userid');
-    console.log(this.element);
-    let nameElements = await this.elementService.GetElementsByPereId(id);
-    for (const element of nameElements) {
-      if (element.nom === this.element.nom) {
-        this.element.nom = this.element.nom + this.today;
-        break;
-      }
-    }
-    this.idElementCreated = await this.elementService.CreateAsync(this.element);
-    console.log(this.idElementCreated);
-    // this.route.navigate(['Create-Role']);
-    window.location.reload();*/
-    console.log("bravoooooooooooooooooooooo");
+   
   }
-   /*
-  handleFileInput(files: FileList) {
-    if (files.length > 0) {
-      this.uploadFile = files.item(0);
-      this.uploadFileLabel = this.uploadFile?.name;
-    }
-  }
-  async upload() {
-    const formData = new FormData();
-
-    formData.append(this.uploadFile.name, this.uploadFile);
-    this.resultUpload = await this.uploadService.CreateAsync(formData);
-
-  }
-  async deleteElement(id: string) {
-    this.dialogService.openConfirmDialog('Êtes-vous sûr de supprimer cet element ?')
-      .afterClosed().subscribe(async res => {
-      if (res) {
-      //  await this.elementService.DeleteAsync(id);
-        window.location.reload();
-      }
-    });
-
-  }
-
-
-  async putElement(form: FormGroup, id: string) {
-    this.element = new Element();
-    this.element = form.value;
-    this.element.pereId = id;
-    if (this.element.type === 'Fichier') {
-      const formData = new FormData();
-
-      formData.append(this.uploadFile.name, this.uploadFile);
-      this.resultUpload = await this.uploadService.CreateAsync(formData);
-
-      console.log(this.resultUpload[0].url);
-
-
-      this.element.path = this.resultUpload[0].url;
-    }
-
-    this.element.createurId = sessionStorage.getItem('userid');
-    console.log(this.element);
-    let nameElements = await this.elementService.GetElementsByPereId(id);
-    for (const element of nameElements) {
-      if (element.nom === this.element.nom) {
-        this.element.nom = this.element.nom + this.today;
-        break;
-      }
-    }
-    this.idElementCreated = await this.elementService.CreateAsync(this.element);
-    console.log(this.idElementCreated);
-    // this.route.navigate(['Create-Role']);
-    window.location.reload();
-  }
-
-  getFile(event: any) {
-    this.file = event.target.files[0].name;
-
-    console.log(this.file);
-  }
-
-  async submitFile() {
-    const formdata = new FormData();
-    formdata.set('files', this.file);
-    await this.fileUploadService.CreateAsync(formdata);
-
-  }
-*/
+  
 async postuler(form: FormGroup,id:string,titre:string) {
   this.modalService.dismissAll();
   
   this.dialogService.openConfirmDialog('Êtes-vous sûr que vous avez postuler cet offre ?')
     .afterClosed().subscribe(async res => {
     if (res) {
-      await this.putCandidature(form,id);
+      await this.putCandidature(form,id,titre);
       //window.location.reload();
     }
   });

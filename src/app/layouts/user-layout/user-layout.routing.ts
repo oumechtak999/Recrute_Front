@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
+import { HomeComponent } from 'src/app/views/User/Home/Home.component';
 
-import {HomePageComponent} from '../../views/User/HomePage.component';
 
 
 
 export const UserLayoutRoutes: Routes = [
-  { path: 'homePage',          component: HomePageComponent },
-
+  { path: 'home',component: HomeComponent },
 ];

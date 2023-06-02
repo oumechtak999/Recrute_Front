@@ -4,7 +4,7 @@ import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common'
 import {Router} from '@angular/router';
 import {ROUTES} from '../sidebar/sidebar.component';
 import {AuthenticationService} from '../../services/Authentications/Authentication.service';
-import {UserService} from '../../services/Users/User.service';
+
 
 @Component({
   selector: 'app-navbar',
@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
   public location: Location;
 
   constructor(location: Location,
-private userService: UserService, private element: ElementRef, private router: Router, private service: AuthenticationService) {
+ private element: ElementRef, private router: Router, private service: AuthenticationService) {
     this.location = location;
 
   }
@@ -28,8 +28,7 @@ private userService: UserService, private element: ElementRef, private router: R
    async ngOnInit() {
     this.listTitles = ROUTES.filter(listTitle => listTitle);
     this.id = sessionStorage.getItem('userid');
-    this.user = await this.userService.GetByIdAsync(this.id);
-
+   
   }
 
   getTitle() {

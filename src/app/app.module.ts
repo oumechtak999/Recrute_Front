@@ -13,10 +13,6 @@ import {NgbActiveModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppRoutingModule} from './app.routing';
 import {ComponentsModule} from './components/components.module';
 
-
-import {UserService} from './services/Users/User.service';
-
-
 import {ToastrModule} from 'ngx-toastr';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {MatButtonModule} from '@angular/material/button';
@@ -68,29 +64,26 @@ import {UserLayoutModule} from './layouts/user-layout/user-layout.module';
 import {AuthenticationService} from './services/Authentications/Authentication.service';
 
 import {Papa} from 'ngx-papaparse';
-import {CreateUsersComponent} from './views/Admin/CreateUsers/CreateUsers.component';
 
 import {NgxPaginationModule} from 'ngx-pagination';
 
 import {TokenInterceptorService} from './services/Tocken/token-interceptor.service';
-import {ServiceService} from './services/Services/Service.service';
-import {RoleService} from './services/Roles/Role.service';
+
 import {ElementService} from './services/Elements/Element.service';
 import {UserRoleService} from './services/UserRole.service';
 import {TreeViewModule} from '@syncfusion/ej2-angular-navigations';
 import {FileUploadService} from './services/FileUpload/FileUpload.service';
-import {UploadComponent} from './views/Uploadfile/upload.component';
-import {UploadDownloadService} from './views/Uploadfile/UploadDownloadService';
+
 import {UploadService} from './services/Upload/Upload.service';
 import {PdfViewerModule} from 'ng2-pdf-viewer';
 import {NgxExtendedPdfViewerModule} from 'ngx-extended-pdf-viewer';
 import {EmailService} from './services/Email/Email.service';
-import {DeleteRecursiveService} from './services/DeleteRecursive/DeleteRecursive.service';
+
 import { CandidatService } from './services/Candidat/Candidat.service';
 import { AdminService } from './services/Admin/Admin.service';
 import { CvService } from './services/Cv/Cv.service';
 import { OffreService } from './services/Offre/Offre.service';
-import { HomeComponent } from './views/User/Home/Home.component';
+
 import { OffreCandidatService } from './services/OffreCandidat/OffreCandidat.service';
 import { AdminPageComponent } from './views/Admin/AdminPage/AdminPage.component';
 import { CandidatsFilterByTelephonePipe } from './ infrastructure/FilterPipes/CandidatFilters/CandidatsFilterByTelephone.pipe';
@@ -123,30 +116,28 @@ import { CandidatsFilterByNomPipe } from './ infrastructure/FilterPipes/Candidat
     , PdfViewerModule,
     NgxExtendedPdfViewerModule,
     HttpClientJsonpModule,
-    UserLayoutModule, NgxPaginationModule, MatTreeModule, MatProgressBarModule, MatCardModule, MatGridListModule
+    UserLayoutModule,
+     NgxPaginationModule, MatTreeModule, MatProgressBarModule, MatCardModule, MatGridListModule
 
 
   ],
 
   declarations: [
     AppComponent,
+    
     AdminLayoutComponent,
     UserLayoutComponent,
-    UploadComponent,
     AuthLayoutComponent,
-    HomeComponent,
-    AdminPageComponent,
-    ConfirmDialogComponent,
-    CandidatsFilterByNomPipe,
-    CandidatsFilterByPrenomPipe,
-    CandidatsFilterByEmailPipe,
-    CandidatsFilterByTelephonePipe,
+    
+    
+    ConfirmDialogComponent
+  
   ],
 
   entryComponents: [ConfirmDialogComponent],
-  providers: [UserService,
-    AuthenticationService, ServiceService, RoleService, ElementService, UserRoleService, FileUploadService,
-    UploadService, EmailService, DeleteRecursiveService,
+  providers: [
+    AuthenticationService,  ElementService, UserRoleService, FileUploadService,
+    UploadService, EmailService,
     OffreService,OffreCandidatService,CvService,AdminService,CandidatService
     , {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}],
 

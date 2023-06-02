@@ -6,7 +6,46 @@
     
   
   <div class="header bg-gradient-info pb-5 pt-2 pt-md-5">
-    <app-navbar></app-navbar>
+    <nav class="navbar navbar-top navbar-expand-md navbar-dark" style="margin-left: 90%;" id="navbar-main">
+      <!--<button>
+       <img src="./assets/img/brand/menu-icon.png" height="30" width="30"/>
+      </button>-->
+      <div class="container-fluid">
+        <!-- Brand
+        <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" routerLinkActive="active" [routerLink]="['/dashboard']">{{getTitle()}}</a>-->
+    
+       
+        <!-- User -->
+        <ul class="navbar-nav align-items-center d-none d-md-flex">
+          <li class="nav-item" ngbDropdown placement="bottom-right">
+            <a class="nav-link pr-0" role="button" ngbDropdownToggle>
+              <div class="media align-items-center">
+                
+                <div class="media-body ml-2 d-none d-lg-block">
+                  <!--    <span class="mb-0 text-sm  font-weight-bold">{{user[0].prenom }} {{user[0].nom}}  </span>-->
+                  <span class="avatar avatar-sm rounded-circle">
+                    <img alt="Image placeholder" src="assets/img/brand/icon-admin.png">
+                  </span>
+                </div>
+              </div>
+            </a>
+            <div class="dropdown-menu-arrow dropdown-menu-right" ngbDropdownMenu>
+              
+    
+              <div class="dropdown-divider"></div>
+              <div  class="dropdown-item">
+                <i class="ni ni-user-run"></i>
+                <button  mat-button (click)="login()">
+                  Login
+                </button>
+              </div>
+    
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    
     <div class="container-fluid">
         
           
@@ -220,94 +259,7 @@
   </div>
      
 
-      <!-- <ng-template #contentSendEmail let-modal class="modal-lg" >
-  
-  
-  
-            <div class="modal-header ">
-              <h4 class="modal-title" id="modal-basic-title">Email</h4>
-              <button type="button" class="btn-close" aria-label="Close" aria-hidden="true" (click)="modal.dismiss('Cross click')">x</button>
-            </div>
-            <div class="modal-body">
-              <form  [formGroup]="myEmailForm" >
-                <div class="pl-lg-4">
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <div class="form-group">
-                        <label class="form-control-label">To   :</label>
-                        <input type="email"   formControlName="toEmail"  class="form-control form-control-alternative" placeholder="">
-                             <span class="text-danger"
-                              *ngIf="registerEmailFormControl.toEmail.untouched || registerEmailFormControl.toEmail.errors?.required
-  || registerEmailFormControl.toEmail.errors?.email">
-                              Email is required or invalid
-                          </span>
-                      </div>
-                    </div>
-  
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <div class="form-group">
-                        <label class="form-control-label">Sujet   :</label>
-                        <input type="text"   formControlName="subject"  class="form-control form-control-alternative" placeholder="">
-                         <span class="text-danger"
-                              *ngIf="registerEmailFormControl.subject.untouched || registerEmailFormControl.subject.errors?.required">
-                              Subject is required
-                          </span>
-                      </div>
-                    </div>
-  
-                  </div>
-  
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <div class="form-group">
-                        <label class="form-control-label">Corps</label>
-                        <textarea    formControlName="body"  class="form-control form-control-alternative" placeholder="">
-                          </textarea>
-                          <span class="text-danger"
-                              *ngIf="registerEmailFormControl.body.untouched || registerEmailFormControl.body.errors?.required">
-                              Body is required
-                          </span>
-                      </div>
-                    </div>
-  
-  
-                  </div>
-  
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <div class="form-group">
-  
-                          <button class="button"  class="button" [disabled]="
-  registerEmailFormControl.toEmail.errors?.required ||
-  registerEmailFormControl.subject.errors?.required ||
-  registerEmailFormControl.body.errors?.required   " (click)="sendEmail(myEmailForm)" >
-  
-                            Envoyer
-                        </button>
-  
-  
-  
-  
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-  
-  
-                    <button class="button" (click)="modal.dismiss('Cross click')">
-                      Annuler
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-  
-      </ng-template>-->
-   
+     
   </div>
     <div class="container-fluid">
       <app-footer></app-footer>

@@ -1,0 +1,297 @@
+
+ 
+  
+  
+ 
+    
+  
+  <div class="header bg-gradient-info pb-5 pt-2 pt-md-5">
+    
+        <div class="row" style="margin-left: 5%;">
+           
+            <div class="col-lg-auto "s>
+            <select [(ngModel)]="CandidatCol" class="form-control form-control-alternative search" >
+      
+              <option  value=nom >Nom </option>
+              <option  value=prenom >Prenom  </option>
+              <option  value=email >Email </option>
+              <option  value=telephone >Telephone  </option>
+            </select>
+            </div>
+      
+             
+                <div class="col-lg-auto ">
+              <input type="text" class="form-control search"
+                     [(ngModel)]="searchCandidat" placeholder="Rechercher un candidat"
+                     autofocus>
+                </div>
+
+                <div class="col-lg-auto "  style="margin-left: 70%;" >
+                    <!-- Brand
+                    <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" routerLinkActive="active" [routerLink]="['/dashboard']">{{getTitle()}}</a>-->
+                
+                   
+                    <!-- User -->
+                    <ul class="navbar-nav align-items-center d-none d-md-flex">
+                        <li class="nav-item" ngbDropdown placement="bottom-right">
+                          <a class="nav-link pr-0" role="button" ngbDropdownToggle>
+                            <div class="media align-items-center">
+                              
+                              <div class="media-body ml-2 d-none d-lg-block">
+                                <!--    <span class="mb-0 text-sm  font-weight-bold">{{user[0].prenom }} {{user[0].nom}}  </span>-->
+                                <span class="avatar avatar-sm rounded-circle">
+                                  <img alt="Image placeholder" src="assets/img/brand/icon-admin.png">
+                                </span>
+                              </div>
+                            </div>
+                          </a>
+                          <div class="dropdown-menu-arrow dropdown-menu-right" ngbDropdownMenu>
+                            
+                  
+                            <div class="dropdown-divider"></div>
+                            <div  class="dropdown-item">
+                              <i class="ni ni-user-run"></i>
+                              <button  mat-button (click)="logout()">
+                                Logout
+                              </button>
+                            </div>
+                  
+                          </div>
+                        </li>
+                      </ul>
+                  </div>
+            </div>
+        
+   
+  </div>
+  <div class="pl-lg-4 backgroundForm">
+
+        
+    <div class="displayMargin">
+        <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+        
+              <thead>
+              <tr>
+        
+                <th scope="col">Entreprise</th>
+                <th scope="col">Titre</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prenom</th>
+                <th scope="col">Cin</th>
+                <th scope="col">Email</th>
+                <th scope="col">Telephone</th>
+                <th scope="col">Niveau d'etude</th>
+                <th scope="col">Niveau d'etude</th>
+                <th scope="col">Dernier employeur</th>
+                <th scope="col">Action</th>
+              </tr>
+        
+              </thead>
+            
+            <ng-container *ngIf="CandidatCol==''">
+              <tbody *ngFor="let offreCandidat of offreCandidats  | paginate: configPagination">
+        
+              <tr>
+                <td>{{offreCandidat.offre.entreprise}}</td>
+                <td>{{offreCandidat.offre.titre}}</td>
+                <td>{{offreCandidat.candidat.nom}}</td>
+                <td>{{offreCandidat.candidat.prenom}}</td>
+                <td>{{offreCandidat.candidat.cin}}</td>
+                <td>{{offreCandidat.candidat.email}}</td>
+                <td>{{offreCandidat.candidat.telephone}}</td>
+                <td>{{offreCandidat.candidat.niveauEtude}}</td>
+                <td>{{offreCandidat.candidat.anneesExperience}}</td>
+                <td>{{offreCandidat.candidat.dernierEmployeur}}</td>
+                
+        
+                <td>
+                  <!-- <button name="supprimer" (click)="delete()">-->
+                  <button class="ButtonWithoutBorder"  (click)="deleteCandidature(offreCandidat.id)" >
+                    <mat-icon>delete</mat-icon>
+        
+                  </button>
+                  
+                  
+                  <button class="ButtonWithoutBorder"  (click)="OpenCv(offreCandidat.candidatId)" >
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                
+                
+                   
+                 
+        
+                  <!--<button name="modifier" (click)="confirm()">-->
+        
+                </td>
+        
+              </tr>
+        
+              </tbody>
+            </ng-container>
+            <ng-container *ngIf="CandidatCol=='nom'">
+                <tbody *ngFor="let offreCandidat of offreCandidats | CandidatsFilterByNom: searchCandidat | paginate: configPagination">
+          
+                <tr>
+                    <td>{{offreCandidat.offre.entreprise}}</td>
+                    <td>{{offreCandidat.offre.titre}}</td>
+                    <td>{{offreCandidat.candidat.nom}}</td>
+                    <td>{{offreCandidat.candidat.prenom}}</td>
+                    <td>{{offreCandidat.candidat.cin}}</td>
+                    <td>{{offreCandidat.candidat.email}}</td>
+                    <td>{{offreCandidat.candidat.telephone}}</td>
+                    <td>{{offreCandidat.candidat.niveauEtude}}</td>
+                    <td>{{offreCandidat.candidat.anneesExperience}}</td>
+                    <td>{{offreCandidat.candidat.dernierEmployeur}}</td>
+                  
+          
+                  <td>
+                    <!-- <button name="supprimer" (click)="delete()">-->
+                    <button class="ButtonWithoutBorder"  (click)="deleteCandidature(offreCandidat.id)" >
+                      <mat-icon>delete</mat-icon>
+          
+                    </button>
+                    <button class="ButtonWithoutBorder"  (click)="OpenCv(offreCandidat.candidatId)" >
+                        <mat-icon>visibility</mat-icon>
+                      </button>
+                     
+                   
+          
+                    <!--<button name="modifier" (click)="confirm()">-->
+          
+                  </td>
+          
+                </tr>
+          
+                </tbody>
+              </ng-container>
+              <ng-container *ngIf="CandidatCol=='prenom'">
+                <tbody *ngFor="let offreCandidat of offreCandidats | CandidatsFilterByPrenom: searchCandidat | paginate: configPagination">
+          
+                <tr>
+                    <td>{{offreCandidat.offre.entreprise}}</td>
+                    <td>{{offreCandidat.offre.titre}}</td>
+                    <td>{{offreCandidat.candidat.nom}}</td>
+                    <td>{{offreCandidat.candidat.prenom}}</td>
+                    <td>{{offreCandidat.candidat.cin}}</td>
+                    <td>{{offreCandidat.candidat.email}}</td>
+                    <td>{{offreCandidat.candidat.telephone}}</td>
+                    <td>{{offreCandidat.candidat.niveauEtude}}</td>
+                    <td>{{offreCandidat.candidat.anneesExperience}}</td>
+                    <td>{{offreCandidat.candidat.dernierEmployeur}}</td>
+          
+                  <td>
+                    <!-- <button name="supprimer" (click)="delete()">-->
+                    <button class="ButtonWithoutBorder"  (click)="deleteCandidature(offreCandidat.id)" >
+                      <mat-icon>delete</mat-icon>
+          
+                    </button>
+                    <a href={{pdfsrc}} (click)="OpenCv(user.id)" >
+                    <button class="ButtonWithoutBorder"   >
+                      <mat-icon>visibility</mat-icon>
+                    </button>
+                  </a>
+                     
+                   
+          
+                    <!--<button name="modifier" (click)="confirm()">-->
+          
+                  </td>
+          
+                </tr>
+          
+                </tbody>
+              </ng-container>
+              <ng-container *ngIf="CandidatCol=='email'">
+                <tbody *ngFor="let offreCandidat of offreCandidats | CandidatsFilterByEmail: searchCandidat | paginate: configPagination">
+          
+                <tr>
+                    
+                        <td>{{offreCandidat.offre.entreprise}}</td>
+                        <td>{{offreCandidat.offre.titre}}</td>
+                        <td>{{offreCandidat.candidat.nom}}</td>
+                        <td>{{offreCandidat.candidat.prenom}}</td>
+                        <td>{{offreCandidat.candidat.cin}}</td>
+                        <td>{{offreCandidat.candidat.email}}</td>
+                        <td>{{offreCandidat.candidat.telephone}}</td>
+                        <td>{{offreCandidat.candidat.niveauEtude}}</td>
+                        <td>{{offreCandidat.candidat.anneesExperience}}</td>
+                        <td>{{offreCandidat.candidat.dernierEmployeur}}</td>
+                      
+              
+                      <td>
+                    <!-- <button name="supprimer" (click)="delete()">-->
+                    <button class="ButtonWithoutBorder"  (click)="deleteCandidature(offreCandidat.id)" >
+                      <mat-icon>delete</mat-icon>
+          
+                    </button>
+                    <button class="ButtonWithoutBorder"  (click)="OpenCv(offreCandidat.candidatId)" >
+                        <mat-icon>visibility</mat-icon>
+                      </button>
+                     
+                   
+          
+                    <!--<button name="modifier" (click)="confirm()">-->
+          
+                  </td>
+          
+                </tr>
+          
+                </tbody>
+              </ng-container>
+              <ng-container *ngIf="CandidatCol=='telephone'">
+                <tbody *ngFor="let offreCandidat of offreCandidats | CandidatsFilterByTelephone: searchCandidat | paginate: configPagination">
+          
+                <tr>
+                    <td>{{offreCandidat.offre.entreprise}}</td>
+                    <td>{{offreCandidat.offre.titre}}</td>
+                    <td>{{offreCandidat.candidat.nom}}</td>
+                    <td>{{offreCandidat.candidat.prenom}}</td>
+                    <td>{{offreCandidat.candidat.cin}}</td>
+                    <td>{{offreCandidat.candidat.email}}</td>
+                    <td>{{offreCandidat.candidat.telephone}}</td>
+                    <td>{{offreCandidat.candidat.niveauEtude}}</td>
+                    <td>{{offreCandidat.candidat.anneesExperience}}</td>
+                    <td>{{offreCandidat.candidat.dernierEmployeur}}</td>
+                  
+          
+                  <td>
+                    <!-- <button name="supprimer" (click)="delete()">-->
+                    <button class="ButtonWithoutBorder"  (click)="deleteCandidature(offreCandidat.id)" >
+                      <mat-icon>delete</mat-icon>
+          
+                    </button>
+                    <button class="ButtonWithoutBorder"  (click)="OpenCv(offreCandidat.candidatId)" >
+                        <mat-icon>visibility</mat-icon>
+                      </button>
+                     
+                   
+          
+                    <!--<button name="modifier" (click)="confirm()">-->
+          
+                  </td>
+          
+                </tr>
+          
+                </tbody>
+              </ng-container>
+            </table>
+          </div>
+      
+  
+  
+  
+      <pagination-controls   (pageChange)="pageChanged($event)"></pagination-controls>
+  </div>
+     
+
+   
+  </div>
+  
+
+ 
+  
+  
+ 
+    
+  

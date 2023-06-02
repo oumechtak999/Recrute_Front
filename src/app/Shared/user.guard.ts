@@ -20,11 +20,11 @@ export class UserGuard implements CanActivate {
         return true;
       } else {
         alert('you are not authorized  to access this menu USER');
-        this.route.navigate(['login']);
+        this.route.navigate(['home']);
         return false;
       }
     } else {
-      this.route.navigate(['login']);
+      this.route.navigate(['home']);
       return false;
     }
   }

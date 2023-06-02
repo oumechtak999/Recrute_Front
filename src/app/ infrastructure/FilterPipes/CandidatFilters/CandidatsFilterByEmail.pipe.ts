@@ -1,12 +1,13 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import { Candidat } from 'src/app/models/Candidat.model';
-import {Element} from '../../../models/Element.model';
+import { OffreCandidat } from 'src/app/models/OffreCandidat.model';
 
 
-@Pipe({ name: 'CandidatsFilterByNom' })
-export class ElementsFilterByDescriptionPipe implements PipeTransform {
+
+@Pipe({ name: 'CandidatsFilterByEmail' })
+export class CandidatsFilterByEmailPipe implements PipeTransform {
   /** * Pipe filters the list of elements based on the search text provided * * @param items list of elements to search in * @param searchText search string * @returns list of elements filtered by search text or [] */
-  transform(items: Candidat[], searchText: string): any[] {
+  transform(items: OffreCandidat[], searchText: string): any[] {
     if (!items) {
       return [];
     }
@@ -16,7 +17,7 @@ export class ElementsFilterByDescriptionPipe implements PipeTransform {
     searchText = searchText.toLocaleLowerCase();
 
     return items.filter(it => {
-      return it.nom.toLocaleLowerCase().includes(searchText);
+      return it.candidat.email.toLocaleLowerCase().includes(searchText);
     });
   }
 }

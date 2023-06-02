@@ -18,7 +18,8 @@ import {LoginComponent} from '../../views/login/login.component';
   ],
   declarations: [
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+   
   ]
 })
 export class AuthLayoutModule { }

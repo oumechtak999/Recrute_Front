@@ -14,16 +14,11 @@ export class AdminGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this.service.IsLoggedIn()) {
-      this.currentrole = this.service.GetRolebyToken(this.service.GetToken());
-      if (this.currentrole == 'Admin') {
+      //this.currentrole = this.service.GetRolebyToken(this.service.GetToken());
         return true;
-      } else {
-        alert('you are not authorized  to access this menu Admin');
-        this.route.navigate(['login']);
-        return false;
-      }
+  
     } else {
-      this.route.navigate(['login']);
+      this.route.navigate(['home']);
       return false;
     }
   }
