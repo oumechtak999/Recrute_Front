@@ -188,7 +188,7 @@ export class HomeComponent implements OnInit {
       this.offreCandidat.candidatId = this.idcandidatCreated;
       this.offreCandidat.offreId = id;
       await this.putOffreCandidat(this.offreCandidat);
-      let subject = "Bonjour"+form.value.nom+form.value.prenom+", vous avez postulé avec succès pour l'offre "+titre;
+      let subject = "Bonjour "+form.value.nom+" "+form.value.prenom+", vous avez postulé avec succès pour l'offre "+titre;
       await this.sendEmail(form.value.email,"Confirmation de candidature ",subject);
    
   }
